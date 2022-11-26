@@ -1,15 +1,15 @@
 const {
-  readAllUsers,
-  readUser,
-  createUser,
-  updateUser,
-  deleteUser,
-} = require("../models/users.model");
+  readAllCinemas,
+  readCinema,
+  createCinema,
+  updateCinema,
+  deleteCinema,
+} = require("../models/cinemas.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
 
-exports.readAllUsers = (req, res) => {
-  readAllUsers((error, results) => {
+exports.readAllCinemas = (req, res) => {
+  readAllCinemas((error, results) => {
     if (error) {
       return errorHandler(error, res);
     }
@@ -20,8 +20,8 @@ exports.readAllUsers = (req, res) => {
   });
 };
 
-exports.readUser = (req, res) => {
-  readUser(req, (error, results) => {
+exports.readCinema = (req, res) => {
+  readCinema(req.params.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
     }
@@ -33,22 +33,22 @@ exports.readUser = (req, res) => {
   });
 };
 
-exports.createUser = (req, res) => {
-  createUser(req.body, (error, results) => {
+exports.createCinema = (req, res) => {
+  createCinema(req.body, (error, results) => {
     if (error) {
       errorHandler(error, res);
     } else {
       return res.status(200).json({
         success: true,
-        message: "User added",
+        message: "Cinema added successfully",
         data: results.rows[0],
       });
     }
   });
 };
 
-exports.updateUser = (req, res) => {
-  updateUser(req.body, req.params.id, (error, results) => {
+exports.updateCinema = (req, res) => {
+  updateCinema(req.body, req.params.id, (error, results) => {
     console.log(results);
     if (error) {
       return errorHandler(error, res);
@@ -57,32 +57,32 @@ exports.updateUser = (req, res) => {
     // if (results.rowCount <= 0) {
     //   return res.status(400).json({
     //     success: false,
-    //     message: "Failed to update, user not found",
+    //     message: "Failed to update, Cinema not found",
     //   });
     // } else {
     return res.status(200).json({
       success: true,
-      message: "User updated",
+      message: "Cinema updated successfully",
       data: results.rows[0],
     });
     // }
   });
 };
 
-exports.deleteUser = (req, res) => {
-  deleteUser(req.params.id, (error, results) => {
+exports.deleteCinema = (req, res) => {
+  deleteCinema(req.params.id, (error, results) => {
     if (error) {
       errorHandler(error, res);
     }
     // if (results.rowCount <= 0) {
     //   return res.status(400).json({
     //     success: false,
-    //     message: "Failed to delete, user not found",
+    //     message: "Failed to delete, Cinema not found",
     //   });
     // } else {
     return res.status(200).json({
       success: true,
-      message: "User deleted",
+      message: "Cinema deleted successfully",
       data: results.rows[0],
     });
     // }

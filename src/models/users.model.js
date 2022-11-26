@@ -1,0 +1,45 @@
+const db = require("../helpers/db.helper");
+
+exports.readAllUsers = (callback) => {
+  db.query("SELECT * FROM users", callback);
+};
+
+exports.createUser = (data, callback) => {
+  const { picture, firstName, lastName, phoneNumber, email, password } = data;
+  const sql =
+    'INSERT INTO users ("picture","firstName","lastName","phoneNumber","email","password") VALUES ($1,$2,$3,$4,$5,$6) RETURNING *';
+  const values = [picture, firstName, lastName, phoneNumber, email, password];
+  return db.query(sql, values, callback);
+};
+
+exports.readUser = (req, callback) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM users WHERE id = $1";
+  const values = [id];
+  db.query(sql, values, callback);
+};
+
+exports.updateUser = (data, id, callback) => {
+  const sql = `UPDATE users SET "picture" = COALESCE(NULLIF($1, ''), "picture"), "firstName" =COALESCE(NULLIF($2, ''), "firstName"), "lastName" =COALESCE(NULLIF($3, ''), "lastName"),"phoneNumber" =COALESCE(NULLIF($4, ''), "phoneNumber"),"email" =COALESCE(NULLIF($5, ''), "email"),"password" =COALESCE(NULLIF($6, ''), "password"), "updatedAt"=$7 WHERE "id" =$8 RETURNING *`;
+
+  const { picture, firstName, lastName, phoneNumber, email, password } = data;
+
+  const values = [
+    picture,
+    firstName,
+    lastName,
+    phoneNumber,
+    email,
+    password,
+    new Date(),
+    id,
+  ];
+
+  db.query(sql, values, callback);
+};
+
+exports.deleteUser = (id, callback) => {
+  const sql = "DELETE FROM users WHERE id = $1 RETURNING *";
+  const values = [id];
+  db.query(sql, values, callback);
+};
