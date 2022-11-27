@@ -7,38 +7,11 @@ const {
 } = require("../models/casts.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllCasts = (req, res) => {
-  req.query.page = parseInt(req.query.page) || 1;
-  req.query.limit = parseInt(req.query.limit) || 5;
-  req.query.search = req.query.search || "";
   const sortable = ["name", "createdAt", "updatedAt"];
-  req.query.sortBy =
-    (sortable.includes(req.query.sortBy) && req.query.sortBy) || "createdAt";
-  req.query.sort = req.query.sort || "ASC";
-
-  const filter = {
-    limit: req.query.limit,
-    offset: (parseInt(req.query.page) - 1) * req.query.limit,
-    search: req.query.search,
-    sortBy: req.query.sortBy,
-    sort: req.query.sort,
-  };
-
-  const pageInfo = {
-    page: req.query.page,
-  };
-  readCountAllCast(filter, (error, results) => {
-    if (error) {
-      return errorHandler(error, res);
-    }
-
-    pageInfo.totalData = results.rows[0].totalData;
-    pageInfo.totalPage = Math.ceil(pageInfo.totalData / req.query.limit);
-    pageInfo.nextPage =
-      req.query.page < pageInfo.totalPage ? req.query.page + 1 : null;
-    pageInfo.prevPage = req.query.page > 1 ? req.query.page - 1 : null;
-
+  filter(req.query, sortable, readCountAllCast, res, (filter, pageInfo) => {
     readAllCasts(filter, (error, results) => {
       if (error) {
         return errorHandler(error, res);
@@ -60,7 +33,7 @@ exports.createCast = (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      message: results.rows[0],
+      data: results.rows[0],
     });
   });
 };
