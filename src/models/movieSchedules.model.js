@@ -5,6 +5,12 @@ exports.readAllMovieSchedules = (callback) => {
   return db.query(sql, callback);
 };
 
+exports.readMovieSchedule = (id, callback) => {
+  const sql = 'SELECT * FROM "movieSchedules" WHERE id = $1';
+  const values = [id];
+  db.query(sql, values, callback);
+};
+
 exports.createMovieSchedule = (data, callback) => {
   const { movieId, cinemaId, price, startDate, endDate } = data;
   const sql =

@@ -1,5 +1,6 @@
 const {
   readAllMovieSchedules,
+  readMovieSchedule,
   createMovieSchedule,
   updateMovieSchedule,
   deleteMovieSchedule,
@@ -12,6 +13,19 @@ exports.readAllMovieSchedules = (req, res) => {
     if (error) {
       return errorHandler(error, res);
     }
+    return res.status(200).json({
+      success: true,
+      data: results.rows,
+    });
+  });
+};
+
+exports.readMovieSchedule = (req, res) => {
+  readMovieSchedule(req.params.id, (error, results) => {
+    if (error) {
+      return errorHandler(error, res);
+    }
+
     return res.status(200).json({
       success: true,
       data: results.rows,
