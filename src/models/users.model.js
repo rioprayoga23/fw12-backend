@@ -1,7 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.readAllUsers = (callback) => {
-  db.query("SELECT * FROM users", callback);
+exports.readAllUsers = (filter, callback) => {
+  const sql = `SELECT * FROM users WHERE "firstName" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, values, callback);
+};
+
+exports.readCountAllUsers = (filter, callback) => {
+  const sql = `SELECT COUNT("firstName") AS "totalData" FROM users WHERE "firstName" LIKE $1`;
+  const values = [`%${filter.search}%`];
+  db.query(sql, values, callback);
 };
 
 exports.createUser = (data, callback) => {

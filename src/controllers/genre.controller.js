@@ -3,18 +3,25 @@ const {
   createGenre,
   updateGenre,
   deleteGenre,
+  readCountAllGenre,
 } = require("../models/genre.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllGenre = (req, res) => {
-  readAllGenre((error, results) => {
-    if (error) {
-      return errorHandler(error, res);
-    }
-    return res.status(200).json({
-      success: true,
-      data: results.rows,
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, readCountAllGenre, res, (filter, pageInfo) => {
+    readAllGenre(filter, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all genre",
+        pageInfo,
+        data: results.rows,
+      });
     });
   });
 };

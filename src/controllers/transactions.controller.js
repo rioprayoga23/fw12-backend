@@ -4,20 +4,33 @@ const {
   createTransaction,
   updateTransaction,
   deleteTransaction,
+  readCountAllTransactions,
 } = require("../models/transactions.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllTransactions = (req, res) => {
-  readAllTransactions((error, results) => {
-    if (error) {
-      return errorHandler(error, res);
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(
+    req.query,
+    sortable,
+    readCountAllTransactions,
+    res,
+    (filter, pageInfo) => {
+      readAllTransactions(filter, (error, results) => {
+        if (error) {
+          return errorHandler(error, res);
+        }
+        return res.status(200).json({
+          success: true,
+          message: "List all transactions",
+          pageInfo,
+          data: results.rows,
+        });
+      });
     }
-    return res.status(200).json({
-      success: true,
-      data: results.rows,
-    });
-  });
+  );
 };
 
 exports.readTransaction = (req, res) => {

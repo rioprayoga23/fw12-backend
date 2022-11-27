@@ -1,20 +1,27 @@
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 const {
-  getAllMovies,
+  readAllMovies,
   createMovie,
   readMovie,
   deleteMovie,
   updateMovie,
+  readCountAllMovies,
 } = require("../models/movies.model");
 
 exports.readAllMovies = (req, res) => {
-  getAllMovies((error, results) => {
-    if (error) {
-      return errorHandler(error, res);
-    }
-    return res.status(200).json({
-      success: true,
-      message: results.rows,
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, readCountAllMovies, res, (filter, pageInfo) => {
+    readAllMovies(filter, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all movies",
+        pageInfo,
+        data: results.rows,
+      });
     });
   });
 };

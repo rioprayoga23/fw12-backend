@@ -4,18 +4,25 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  readCountAllUsers,
 } = require("../models/users.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllUsers = (req, res) => {
-  readAllUsers((error, results) => {
-    if (error) {
-      return errorHandler(error, res);
-    }
-    return res.status(200).json({
-      success: true,
-      data: results.rows,
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, readCountAllUsers, res, (filter, pageInfo) => {
+    readAllUsers(filter, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all users",
+        pageInfo,
+        data: results.rows,
+      });
     });
   });
 };

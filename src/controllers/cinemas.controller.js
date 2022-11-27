@@ -4,18 +4,25 @@ const {
   createCinema,
   updateCinema,
   deleteCinema,
+  readCountAllCinemas,
 } = require("../models/cinemas.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllCinemas = (req, res) => {
-  readAllCinemas((error, results) => {
-    if (error) {
-      return errorHandler(error, res);
-    }
-    return res.status(200).json({
-      success: true,
-      data: results.rows,
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, readCountAllCinemas, res, (filter, pageInfo) => {
+    readAllCinemas(filter, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all cinemas",
+        pageInfo,
+        data: results.rows,
+      });
     });
   });
 };

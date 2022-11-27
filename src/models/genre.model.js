@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.readAllGenre = (callback) => {
-  const sql = "SELECT * FROM genre";
-  return db.query(sql, callback);
+exports.readAllGenre = (filter, callback) => {
+  const sql = `SELECT * FROM genre WHERE name LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`, filter.limit, filter.offset];
+  return db.query(sql, values, callback);
+};
+
+exports.readCountAllGenre = (filter, callback) => {
+  const sql = `SELECT COUNT("name") AS "totalData" FROM "genre" WHERE name LIKE $1`;
+  const values = [`%${filter.search}%`];
+  return db.query(sql, values, callback);
 };
 
 exports.createGenre = (data, callback) => {
