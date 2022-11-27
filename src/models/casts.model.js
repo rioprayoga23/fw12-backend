@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.readAllCasts = (callback) => {
-  const sql = "SELECT * FROM casts";
-  return db.query(sql, callback);
+exports.readAllCasts = (filter, callback) => {
+  const sql = `SELECT * FROM casts WHERE name LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`, filter.limit, filter.offset];
+  return db.query(sql, values, callback);
+};
+
+exports.readCountAllCast = (filter, callback) => {
+  const sql = `SELECT COUNT("name") AS "totalData" FROM "casts" WHERE name LIKE $1`;
+  const values = [`%${filter.search}%`];
+  db.query(sql, values, callback);
 };
 
 exports.createCast = (data, callback) => {
