@@ -23,7 +23,13 @@ exports.errorHandler = (error, res) => {
       message: "Genre already",
     });
   }
-  if (error.message.includes())
+  if (error.message.includes(' unique constraint "UniquePhoneNumberUsers"')) {
+    return res.status(400).json({
+      success: false,
+      message: "Phone Number already used",
+    });
+  }
+  if (error)
     return res.status(500).json({
       success: false,
       message: `Something error in our backend : ${error.message}`,
