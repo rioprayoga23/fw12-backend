@@ -15,8 +15,8 @@ CREATE TABLE "users" (
     "email" VARCHAR(225) UNIQUE,
     "password" VARCHAR(225),
     "isAdmin" BOOLEAN NULL DEFAULT false,
-    "createdAt" TIMESTAMP DEFAULT now(),
-    "updatedAt" TIMESTAMP 
+    "createdAt" TIMESTAMPZ DEFAULT now(),
+    "updatedAt" TIMESTAMPZ 
 );
 
 CREATE TABLE "forgotPassword"(
@@ -244,3 +244,104 @@ SELECT * FROM subscribers;
 
 INSERT INTO subscribers (email) VALUES ('rio@gmail.com');
 --* end subscibers 
+
+--! RELATION
+
+--! Relasi tabel "forgotPassword" -> users
+ALTER TABLE "forgotPassword" ADD CONSTRAINT "fk_userId" FOREIGN KEY ("userId") REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--! Relasi tabel "movieScheduleTimes" -> moviSchedule
+ALTER TABLE "movieScheduleTimes" ADD CONSTRAINT "fk_movieScheduleId" FOREIGN KEY ("movieScheduleId") REFERENCES "movieSchedules"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--! Relasi tabel "movieSchdule" -> movies
+ALTER TABLE "movieSchedules" ADD CONSTRAINT "fk_movieId" FOREIGN KEY ("movieId") REFERENCES "movies"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--! Relasi tabel "movieSchdule" -> cinemas
+ALTER TABLE "movieSchedules" ADD CONSTRAINT "fk_cinemaId" FOREIGN KEY ("cinemaId") REFERENCES "cinemas"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--! Relasi tabel "movieCast" -> cast
+ALTER TABLE "movieCast" ADD CONSTRAINT "fk_castId" FOREIGN KEY ("castId") REFERENCES "casts"(id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
+--! Relasi tabel "movieCast" -> movies
+ALTER TABLE "movieCast" ADD CONSTRAINT "fk_movieId" FOREIGN KEY ("movieId") REFERENCES "casts"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--*ALTER COLUMN UNTUK TIMESTAMP
+ALTER TABLE users
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE transactions
+ALTER COLUMN "bookingDate" TYPE TIMESTAMPTZ,
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+
+ALTER TABLE subscribers
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE status
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "reservedSeat"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "paymentMethod"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "movies"
+ALTER COLUMN "releaseDate" TYPE TIMESTAMPTZ,
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "movieSchedules"
+ALTER COLUMN "startDate" TYPE TIMESTAMPTZ,
+ALTER COLUMN "endDate" TYPE TIMESTAMPTZ,
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "movieScheduleTimes"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "movieGenre"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "movieCast"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "genre"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "forgotPassword"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "cinemas"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+ALTER TABLE "casts"
+ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
+ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
+
+--*ALTER COLUMN UNIQUE
+ALTER TABLE subscribers ADD CONSTRAINT "UniqueEmailSubscribers" UNIQUE (email);
+
+ALTER TABLE status ADD CONSTRAINT "UniqueNameStatus" UNIQUE (name);
+
+ALTER TABLE genre ADD CONSTRAINT "UniqueNameGenre" UNIQUE (name);
+
+
+
+
