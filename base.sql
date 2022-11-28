@@ -98,13 +98,16 @@ CREATE TABLE "status"(
 );
 CREATE TABLE "transactions"(
     "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "userId" INT,
     "bookingDate" TIMESTAMP,
     "movieId" INT,
     "cinemaId" INT,
     "movieScheduleId" INT,
+    "reservedSeatId" INT,
     "fullName" VARCHAR(225),
     "email" VARCHAR(225),
     "phoneNumber" VARCHAR(225),
+    "paymentMethodId" INT,
     "idStatus" INT,
     "createdAt" TIMESTAMP DEFAULT now(),
     "updatedAt" TIMESTAMP 
@@ -112,7 +115,6 @@ CREATE TABLE "transactions"(
 CREATE TABLE "reservedSeat"(
     "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "seatNum" VARCHAR(225),
-    "transactionId" INT,
     "createdAt" TIMESTAMP DEFAULT now(),
     "updatedAt" TIMESTAMP 
 );
@@ -247,26 +249,78 @@ INSERT INTO subscribers (email) VALUES ('rio@gmail.com');
 
 --! RELATION
 
---! Relasi tabel "forgotPassword" -> users
-ALTER TABLE "forgotPassword" ADD CONSTRAINT "fk_userId" FOREIGN KEY ("userId") REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
-
---! Relasi tabel "movieScheduleTimes" -> moviSchedule
-ALTER TABLE "movieScheduleTimes" ADD CONSTRAINT "fk_movieScheduleId" FOREIGN KEY ("movieScheduleId") REFERENCES "movieSchedules"(id) ON DELETE CASCADE ON UPDATE CASCADE;
-
---! Relasi tabel "movieSchdule" -> movies
-ALTER TABLE "movieSchedules" ADD CONSTRAINT "fk_movieId" FOREIGN KEY ("movieId") REFERENCES "movies"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "movieGenre"
+ADD CONSTRAINT "fk_movieGenre_movieId"
+FOREIGN KEY ("movieId") REFERENCES movies(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 
---! Relasi tabel "movieSchdule" -> cinemas
-ALTER TABLE "movieSchedules" ADD CONSTRAINT "fk_cinemaId" FOREIGN KEY ("cinemaId") REFERENCES "cinemas"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "movieGenre"
+ADD CONSTRAINT "fk_movieGenre_genreId"
+FOREIGN KEY ("genreId") REFERENCES genre(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "movieCast"
+ADD CONSTRAINT "fk_movieCast_castId"
+FOREIGN KEY ("castId") REFERENCES casts(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "movieCast"
+ADD CONSTRAINT "fk_movieCast_movieId"
+FOREIGN KEY ("movieId") REFERENCES movies(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 
---! Relasi tabel "movieCast" -> cast
-ALTER TABLE "movieCast" ADD CONSTRAINT "fk_castId" FOREIGN KEY ("castId") REFERENCES "casts"(id) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "movieSchedules" 
+ADD CONSTRAINT "fk_movieSchedule_cinemaId" 
+FOREIGN KEY ("cinemaId") REFERENCES cinemas(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE "movieSchedules" 
+ADD CONSTRAINT "fk_movieSchedule_movieId" 
+FOREIGN KEY ("movieId") REFERENCES movies(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
 
---! Relasi tabel "movieCast" -> movies
-ALTER TABLE "movieCast" ADD CONSTRAINT "fk_movieId" FOREIGN KEY ("movieId") REFERENCES "casts"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "movieScheduleTimes" 
+ADD CONSTRAINT "fk_movieSchedulesTimes_movieSchedules" 
+FOREIGN KEY ("movieScheduleId") REFERENCES "movieSchedules"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_userId" 
+FOREIGN KEY ("userId") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_movieId" 
+FOREIGN KEY ("movieId") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_cinemaId" 
+FOREIGN KEY ("cinemaId") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_movieScheduleId" 
+FOREIGN KEY ("movieScheduleId") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_statusId" 
+FOREIGN KEY ("idStatus") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_paymentMethodId" 
+FOREIGN KEY ("paymentMethodId") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "transactions" 
+ADD CONSTRAINT "fk_transactions_reservedSeatId" 
+FOREIGN KEY ("reservedSeatId") REFERENCES "transactions"(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 
 --*ALTER COLUMN UNTUK TIMESTAMP
@@ -341,6 +395,8 @@ ALTER TABLE subscribers ADD CONSTRAINT "UniqueEmailSubscribers" UNIQUE (email);
 ALTER TABLE status ADD CONSTRAINT "UniqueNameStatus" UNIQUE (name);
 
 ALTER TABLE genre ADD CONSTRAINT "UniqueNameGenre" UNIQUE (name);
+
+ALTER TABLE users ADD CONSTRAINT "UniquePhoneNumberUsers" UNIQUE ("phoneNumber");
 
 
 
