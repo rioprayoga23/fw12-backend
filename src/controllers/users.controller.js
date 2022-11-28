@@ -28,7 +28,7 @@ exports.readAllUsers = (req, res) => {
 };
 
 exports.readUser = (req, res) => {
-  readUser(req, (error, results) => {
+  readUser(req.params.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
     }

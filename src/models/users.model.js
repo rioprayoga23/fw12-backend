@@ -20,10 +20,15 @@ exports.createUser = (data, callback) => {
   return db.query(sql, values, callback);
 };
 
-exports.readUser = (req, callback) => {
-  const id = req.params.id;
+exports.readUser = (id, callback) => {
   const sql = "SELECT * FROM users WHERE id = $1";
   const values = [id];
+  db.query(sql, values, callback);
+};
+
+exports.readUserByEmail = (email, callback) => {
+  const sql = "SELECT * FROM users WHERE email = $1";
+  const values = [email];
   db.query(sql, values, callback);
 };
 
