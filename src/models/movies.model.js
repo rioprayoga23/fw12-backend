@@ -30,7 +30,7 @@ exports.readMovie = (id, callback) => {
 exports.updateMovie = (data, id, callback) => {
   const { title, picture, releaseDate, director, duration, synopsis } = data;
 
-  const sql = `UPDATE movies SET "title" =COALESCE(NULLIF($1, ''), "title"), "picture" =COALESCE(NULLIF($2, ''), "picture"),"releaseDate" =COALESCE(NULLIF($3, '')::TIMESTAMP, "releaseDate"),"director" =COALESCE(NULLIF($4, ''), "director"),"duration" =COALESCE(NULLIF($5, '')::TIME, "duration"),"synopsis" =COALESCE(NULLIF($6, ''), "synopsis"), "updatedAt"= $7 WHERE id =$8 RETURNING *`;
+  const sql = `UPDATE movies SET "title" =COALESCE(NULLIF($1, ''), "title"), "picture" =COALESCE(NULLIF($2, ''), "picture"),"releaseDate" =COALESCE(NULLIF($3, '')::TIMESTAMPTZ, "releaseDate"),"director" =COALESCE(NULLIF($4, ''), "director"),"duration" =COALESCE(NULLIF($5, '')::TIME, "duration"),"synopsis" =COALESCE(NULLIF($6, ''), "synopsis"), "updatedAt"= $7 WHERE id =$8 RETURNING *`;
 
   const values = [
     title,

@@ -23,7 +23,7 @@ exports.createMovieSchedule = (data, callback) => {
 
 exports.updateMovieSchedule = (data, id, callback) => {
   const { movieId, cinemaId, price, startDate, endDate } = data;
-  const sql = `UPDATE "movieSchedules" SET "movieId"=COALESCE(NULLIF($1, '')::INTEGER, "movieId"), "cinemaId"=COALESCE(NULLIF($2, '')::INTEGER, "cinemaId"),"price"=COALESCE(NULLIF($3, '')::BIGINT, "price"),"startDate"=COALESCE(NULLIF($4, '')::TIMESTAMP, "startDate"),"endDate"=COALESCE(NULLIF($5, '')::TIMESTAMP, "endDate"), "updatedAt"=$6 WHERE id =$7 RETURNING *`;
+  const sql = `UPDATE "movieSchedules" SET "movieId"=COALESCE(NULLIF($1, '')::INTEGER, "movieId"), "cinemaId"=COALESCE(NULLIF($2, '')::INTEGER, "cinemaId"),"price"=COALESCE(NULLIF($3, '')::BIGINT, "price"),"startDate"=COALESCE(NULLIF($4, '')::TIMESTAMPTZ, "startDate"),"endDate"=COALESCE(NULLIF($5, '')::TIMESTAMPTZ, "endDate"), "updatedAt"=$6 WHERE id =$7 RETURNING *`;
   const values = [movieId, cinemaId, price, startDate, endDate, new Date(), id];
   db.query(sql, values, callback);
 };

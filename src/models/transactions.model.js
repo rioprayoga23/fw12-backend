@@ -58,7 +58,7 @@ exports.updateTransaction = (data, id, callback) => {
     idStatus,
   } = data;
 
-  const sql = `UPDATE transactions SET "bookingDate" =COALESCE(NULLIF($1, '')::TIMESTAMP, "bookingDate"), "movieId" =COALESCE(NULLIF($2, '')::INTEGER, "movieId"),"cinemaId" =COALESCE(NULLIF($3, '')::INTEGER, "cinemaId"),"movieScheduleId" =COALESCE(NULLIF($4, '')::INTEGER, "movieScheduleId"),"fullName" =COALESCE(NULLIF($5, ''), "fullName"),"email" =COALESCE(NULLIF($6, ''), "email"),"phoneNumber"=COALESCE(NULLIF($7, ''), "phoneNumber"),"idStatus"=COALESCE(NULLIF($8, '')::INTEGER, "idStatus"), "updatedAt"=$9 WHERE id =$10 RETURNING *`;
+  const sql = `UPDATE transactions SET "bookingDate" =COALESCE(NULLIF($1, '')::TIMESTAMPTZ, "bookingDate"), "movieId" =COALESCE(NULLIF($2, '')::INTEGER, "movieId"),"cinemaId" =COALESCE(NULLIF($3, '')::INTEGER, "cinemaId"),"movieScheduleId" =COALESCE(NULLIF($4, '')::INTEGER, "movieScheduleId"),"fullName" =COALESCE(NULLIF($5, ''), "fullName"),"email" =COALESCE(NULLIF($6, ''), "email"),"phoneNumber"=COALESCE(NULLIF($7, ''), "phoneNumber"),"idStatus"=COALESCE(NULLIF($8, '')::INTEGER, "idStatus"), "updatedAt"=$9 WHERE id =$10 RETURNING *`;
 
   const values = [
     bookingDate,
