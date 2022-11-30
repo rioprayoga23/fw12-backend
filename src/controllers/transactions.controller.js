@@ -5,6 +5,7 @@ const {
   updateTransaction,
   deleteTransaction,
   readCountAllTransactions,
+  createOrder,
 } = require("../models/transactions.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
@@ -101,5 +102,18 @@ exports.deleteTransaction = (req, res) => {
       data: results.rows[0],
     });
     // }
+  });
+};
+
+exports.createOrder = (req, res) => {
+  createOrder(req.body, (error, results) => {
+    if (error) {
+      return errorHandler(error, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Create order success",
+      data: [results.trxQuery.rows[0], results.rsvQuery.rows[0]],
+    });
   });
 };

@@ -4,6 +4,7 @@ const {
   createTransaction,
   updateTransaction,
   deleteTransaction,
+  createOrder,
 } = require("../controllers/transactions.controller");
 
 const transactionRouter = require("express").Router();
@@ -11,6 +12,7 @@ const transactionRouter = require("express").Router();
 transactionRouter.get("/", readAllTransactions);
 transactionRouter.get("/:id", readTransaction);
 transactionRouter.post("/", createTransaction);
+transactionRouter.post("/createOrder", createOrder);
 transactionRouter.patch("/:id", updateTransaction);
 transactionRouter.delete("/:id", deleteTransaction);
 

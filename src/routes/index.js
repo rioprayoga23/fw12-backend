@@ -16,7 +16,7 @@ routes.use("/movieScheduleTimes", require("./movieScheduleTimes.router"));
 routes.use("/movieSchedules", require("./movieSchedule.router"));
 routes.use("/paymentMethod", require("./paymentMethod.router"));
 routes.use("/reservedSeat", require("./reservedSeat.router"));
-routes.use("/transactions", require("./transactions.router"));
+routes.use("/transactions", authMiddleware, require("./transactions.router"));
 
 routes.use("/auth", require("./auth.router"));
 

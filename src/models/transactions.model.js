@@ -93,3 +93,54 @@ exports.deleteTransaction = (id, callback) => {
   const values = [id];
   db.query(sql, values, callback);
 };
+
+exports.createOrder = async (data, callback) => {
+  const dataBody = {
+    userId: data.userId,
+    bookingDate: data.bookingDate,
+    movieId: data.movieId,
+    cinemaId: data.cinemaId,
+    movieScheduleId: data.movieScheduleId,
+    fullName: data.fullName,
+    email: data.email,
+    phoneNumber: data.phoneNumber,
+    paymentMethodId: data.paymentMethodId,
+    idStatus: data.idStatus,
+    seatNum: data.seatNum,
+  };
+
+  try {
+    await db.query("BEGIN");
+
+    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","movieScheduleId","fullName",email,"phoneNumber","paymentMethodId","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`;
+
+    const trxQuery = await db.query(sqlTransaction, [
+      dataBody.userId,
+      dataBody.bookingDate,
+      dataBody.movieId,
+      dataBody.cinemaId,
+      dataBody.movieScheduleId,
+      dataBody.fullName,
+      dataBody.email,
+      dataBody.phoneNumber,
+      dataBody.paymentMethodId,
+      dataBody.idStatus,
+    ]);
+
+    const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
+
+    const rsvQuery = await db.query(sqlReservedSeat, [dataBody.seatNum]);
+
+    await db.query("COMMIT");
+
+    const results = {
+      trxQuery,
+      rsvQuery,
+    };
+
+    callback(null, results);
+  } catch (error) {
+    // db.query("ROLLBACK");
+    callback(error, null);
+  }
+};
