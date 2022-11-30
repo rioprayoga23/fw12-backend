@@ -7,6 +7,10 @@ const {
   deleteMovie,
   updateMovie,
   readCountAllMovies,
+  nowShowing,
+  upComing,
+  countNowShowing,
+  countUpComing,
 } = require("../models/movies.model");
 
 exports.readAllMovies = (req, res) => {
@@ -72,6 +76,40 @@ exports.deleteMovie = (req, res) => {
       success: true,
       message: "Delete Movie successfully",
       data: results.rows[0],
+    });
+  });
+};
+
+exports.nowShowing = (req, res) => {
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, countNowShowing, res, (filter, pageInfo) => {
+    nowShowing(filter, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List Now Showing",
+        pageInfo,
+        data: results.rows,
+      });
+    });
+  });
+};
+
+exports.upComing = (req, res) => {
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, countUpComing, res, (filter, pageInfo) => {
+    upComing(filter, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Upcoming Now showing",
+        pageInfo,
+        data: results.rows,
+      });
     });
   });
 };

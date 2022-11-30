@@ -29,6 +29,13 @@ exports.errorHandler = (error, res) => {
       message: "Phone Number already used",
     });
   }
+  if (error.message.includes("File too large")) {
+    return res.status(400).json({
+      success: false,
+      message: "Picture size to large",
+    });
+  }
+
   if (error)
     return res.status(500).json({
       success: false,

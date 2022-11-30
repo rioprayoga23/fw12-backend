@@ -45,7 +45,7 @@ exports.updateForgotPassword = (req, res) => {
 };
 
 exports.deleteForgotPassword = (req, res) => {
-  deleteForgotPassword(req, (error, results) => {
+  deleteForgotPassword(req.params.id, (error, results) => {
     if (error) {
       errorHandler(error, res);
     }

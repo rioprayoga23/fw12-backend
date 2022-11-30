@@ -8,6 +8,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+app.use("/assets/uploads", express.static("uploads/"));
+
 app.use("/", require("./src/routes"));
 
 app.get("/", (req, res) => {

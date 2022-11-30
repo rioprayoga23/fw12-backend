@@ -14,27 +14,33 @@ exports.readCountAllTransactions = (filter, callback) => {
 
 exports.createTransaction = (data, callback) => {
   const {
+    userId,
     bookingDate,
     movieId,
     cinemaId,
     movieScheduleId,
+    reservedSeatId,
     fullName,
     email,
     phoneNumber,
+    paymentMethodId,
     idStatus,
   } = data;
 
   const sql =
-    'INSERT INTO transactions ("bookingDate","movieId","cinemaId","movieScheduleId","fullName","email","phoneNumber","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *';
+    'INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","movieScheduleId","reservedSeatId","fullName","email","phoneNumber","paymentMethodId","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *';
 
   const values = [
+    userId,
     bookingDate,
     movieId,
     cinemaId,
     movieScheduleId,
+    reservedSeatId,
     fullName,
     email,
     phoneNumber,
+    paymentMethodId,
     idStatus,
   ];
   return db.query(sql, values, callback);
@@ -48,26 +54,32 @@ exports.readTransaction = (id, callback) => {
 
 exports.updateTransaction = (data, id, callback) => {
   const {
+    userId,
     bookingDate,
     movieId,
     cinemaId,
     movieScheduleId,
+    reservedSeatId,
     fullName,
     email,
     phoneNumber,
+    paymentMethodId,
     idStatus,
   } = data;
 
-  const sql = `UPDATE transactions SET "bookingDate" =COALESCE(NULLIF($1, '')::TIMESTAMPTZ, "bookingDate"), "movieId" =COALESCE(NULLIF($2, '')::INTEGER, "movieId"),"cinemaId" =COALESCE(NULLIF($3, '')::INTEGER, "cinemaId"),"movieScheduleId" =COALESCE(NULLIF($4, '')::INTEGER, "movieScheduleId"),"fullName" =COALESCE(NULLIF($5, ''), "fullName"),"email" =COALESCE(NULLIF($6, ''), "email"),"phoneNumber"=COALESCE(NULLIF($7, ''), "phoneNumber"),"idStatus"=COALESCE(NULLIF($8, '')::INTEGER, "idStatus"), "updatedAt"=$9 WHERE id =$10 RETURNING *`;
+  const sql = `UPDATE transactions SET "userId" =COALESCE(NULLIF($1, '')::INTEGER, "userId"), "bookingDate" =COALESCE(NULLIF($2, '')::TIMESTAMPTZ, "bookingDate"), "movieId" =COALESCE(NULLIF($3, '')::INTEGER, "movieId"),"cinemaId" =COALESCE(NULLIF($4, '')::INTEGER, "cinemaId"),"movieScheduleId" =COALESCE(NULLIF($5, '')::INTEGER, "movieScheduleId"),"reservedSeatId" =COALESCE(NULLIF($6, '')::INTEGER, "reservedSeatId"),"fullName" =COALESCE(NULLIF($7, ''), "fullName"),"email" =COALESCE(NULLIF($8, ''), "email"),"phoneNumber"=COALESCE(NULLIF($9, ''), "phoneNumber"),"paymentMethodId" =COALESCE(NULLIF($10, '')::INTEGER, "paymentMethodId"),"idStatus"=COALESCE(NULLIF($11, '')::INTEGER, "idStatus"), "updatedAt"=$12 WHERE id =$13 RETURNING *`;
 
   const values = [
+    userId,
     bookingDate,
     movieId,
     cinemaId,
     movieScheduleId,
+    reservedSeatId,
     fullName,
     email,
     phoneNumber,
+    paymentMethodId,
     idStatus,
     new Date(),
     id,

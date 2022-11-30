@@ -4,8 +4,11 @@ const filter = (data, sortable, countModel, res, callback) => {
   data.page = parseInt(data.page) || 1;
   data.limit = parseInt(data.limit) || 5;
   data.search = data.search || "";
-  data.sortBy = (sortable.includes(data.sortBy) && data.sortBy) || "createdAt";
+  data.sortBy = (data.sortBy && sortable.includes(data.sortBy)) || "createdAt";
   data.sort = data.sort || "ASC";
+  data.month =
+    data.month || new Date().toLocaleString("default", { month: "long" });
+  data.year = data.year || new Date().getFullYear();
 
   const params = {
     limit: data.limit,
@@ -13,6 +16,8 @@ const filter = (data, sortable, countModel, res, callback) => {
     search: data.search,
     sortBy: data.sortBy,
     sort: data.sort,
+    month: data.month,
+    year: data.year,
   };
 
   const pageInfo = {

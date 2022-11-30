@@ -288,37 +288,37 @@ ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_userId" 
-FOREIGN KEY ("userId") REFERENCES "transactions"(id) 
+FOREIGN KEY ("userId") REFERENCES "users"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_movieId" 
-FOREIGN KEY ("movieId") REFERENCES "transactions"(id) 
+FOREIGN KEY ("movieId") REFERENCES "movies"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_cinemaId" 
-FOREIGN KEY ("cinemaId") REFERENCES "transactions"(id) 
+FOREIGN KEY ("cinemaId") REFERENCES "cinemas"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_movieScheduleId" 
-FOREIGN KEY ("movieScheduleId") REFERENCES "transactions"(id) 
+FOREIGN KEY ("movieScheduleId") REFERENCES "movieSchedules"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_statusId" 
-FOREIGN KEY ("idStatus") REFERENCES "transactions"(id) 
+FOREIGN KEY ("idStatus") REFERENCES "status"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_paymentMethodId" 
-FOREIGN KEY ("paymentMethodId") REFERENCES "transactions"(id) 
+FOREIGN KEY ("paymentMethodId") REFERENCES "paymentMethod"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "transactions" 
 ADD CONSTRAINT "fk_transactions_reservedSeatId" 
-FOREIGN KEY ("reservedSeatId") REFERENCES "transactions"(id) 
+FOREIGN KEY ("reservedSeatId") REFERENCES "reservedSeat"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 
@@ -351,13 +351,13 @@ ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
 ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
 
 ALTER TABLE "movies"
-ALTER COLUMN "releaseDate" TYPE TIMESTAMPTZ,
+ALTER COLUMN "releaseDate" TYPE DATE,
 ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
 ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
 
 ALTER TABLE "movieSchedules"
-ALTER COLUMN "startDate" TYPE TIMESTAMPTZ,
-ALTER COLUMN "endDate" TYPE TIMESTAMPTZ,
+ALTER COLUMN "startDate" TYPE TIMESTAMP,
+ALTER COLUMN "endDate" TYPE TIMESTAMP,
 ALTER COLUMN "createdAt" TYPE TIMESTAMPTZ,
 ALTER COLUMN "updatedAt" TYPE TIMESTAMPTZ;
 
@@ -398,6 +398,5 @@ ALTER TABLE genre ADD CONSTRAINT "UniqueNameGenre" UNIQUE (name);
 
 ALTER TABLE users ADD CONSTRAINT "UniquePhoneNumberUsers" UNIQUE ("phoneNumber");
 
-
-
+SELECT m.id, m.picture, m.title, m."releaseDate", string_agg(g.name,', ') AS genre, m."createdAt" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" WHERE to_char("releaseDate", 'FMMonth') = 'December' AND to_char("releaseDate", 'FMYYYY') = '2022' AND m.title LIKE '%Naruto%' GROUP BY m.id;
 

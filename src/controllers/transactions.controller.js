@@ -49,6 +49,7 @@ exports.readTransaction = (req, res) => {
 exports.createTransaction = (req, res) => {
   createTransaction(req.body, (error, results) => {
     if (error) {
+      console.log(error);
       errorHandler(error, res);
     } else {
       return res.status(200).json({

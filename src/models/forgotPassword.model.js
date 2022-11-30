@@ -1,31 +1,35 @@
 const db = require("../helpers/db.helper");
 
 exports.readAllForgotPassword = (callback) => {
-  return db.query('SELECT * FROM "forgotPassword"', callback);
+  const sql = 'SELECT * FROM "forgotPassword"';
+  return db.query(sql, callback);
+};
+
+exports.readForgotPasswordByEmailAndCode = (data, callback) => {
+  const { email, code } = data;
+  const sql = 'SELECT * FROM "forgotPassword" WHERE email=$1 AND code=$2';
+  const values = [email, code];
+  return db.query(sql, values, callback);
 };
 
 exports.createForgotPassword = (data, callback) => {
-  const { userId, code } = data;
+  const { email, userId, code } = data;
   const sql =
-    'INSERT INTO "forgotPassword" ("userId","code") VALUES ($1,$2) RETURNING *';
-  const values = [userId, code];
+    'INSERT INTO "forgotPassword" ("email","userId","code") VALUES ($1,$2,$3) RETURNING *';
+  const values = [email, userId, code];
   return db.query(sql, values, callback);
 };
 
 exports.updateForgotPassword = (data, id, callback) => {
-  const { userId, code } = data;
+  const { email, userId, code } = data;
 
-  const sql = `UPDATE "forgotPassword" SET "userId"=COALESCE(NULLIF($1, '')::INTEGER, "userId"),"code"=COALESCE(NULLIF($2, ''), "code"), "updatedAt"=$3 WHERE id =$4 RETURNING *`;
-  const values = [userId, code, new Date(), id];
+  const sql = `UPDATE "forgotPassword" SET "email"=COALESCE(NULLIF($1, ''), "email"), "userId"=COALESCE(NULLIF($2, '')::INTEGER, "userId"),"code"=COALESCE(NULLIF($3, ''), "code"), "updatedAt"=$3 WHERE id =$4 RETURNING *`;
+  const values = [email, userId, code, new Date(), id];
   db.query(sql, values, callback);
 };
 
-exports.deleteForgotPassword = (req, callback) => {
-  const id = parseInt(req.params.id);
-
-  db.query(
-    'DELETE FROM "forgotPassword" WHERE id = $1 RETURNING *',
-    [id],
-    callback
-  );
+exports.deleteForgotPassword = (id, callback) => {
+  const sql = 'DELETE FROM "forgotPassword" WHERE id = $1 RETURNING *';
+  const values = [id];
+  db.query(sql, values, callback);
 };

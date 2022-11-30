@@ -51,3 +51,37 @@ exports.deleteMovie = (id, callback) => {
   const values = [id];
   db.query(sql, values, callback);
 };
+
+exports.nowShowing = (filter, callback) => {
+  const sql = `SELECT m.id, m.picture, m.title, string_agg(g.name,', ') AS genre, ms."startDate", ms."endDate", m."createdAt" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" JOIN "movieSchedules" ms ON ms."movieId" = m.id WHERE NOW() BETWEEN ms."startDate" AND ms."endDate" AND m.title LIKE $1 GROUP BY m.id, ms.id ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`, filter.limit, filter.offset];
+
+  db.query(sql, values, callback);
+};
+
+exports.countNowShowing = (filter, callback) => {
+  const sql = `SELECT COUNT("title") AS "totalData" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" JOIN "movieSchedules" ms ON ms."movieId" = m.id WHERE NOW() BETWEEN ms."startDate" AND ms."endDate" AND m.title LIKE $1`;
+
+  const values = [`%${filter.search}%`];
+  db.query(sql, values, callback);
+};
+
+exports.upComing = (filter, callback) => {
+  const sql = `SELECT m.id, m.picture, m.title, m."releaseDate", string_agg(g.name,', ') AS genre, m."createdAt" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" WHERE to_char("releaseDate", 'FMMonth') = $1 AND to_char("releaseDate", 'FMYYYY') = $2 AND m.title LIKE $3 GROUP BY m.id ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $4 OFFSET $5`;
+  const values = [
+    filter.month,
+    filter.year,
+    `%${filter.search}%`,
+    filter.limit,
+    filter.offset,
+  ];
+  db.query(sql, values, callback);
+};
+
+exports.countUpComing = (filter, callback) => {
+  const sql = `SELECT COUNT("title") AS "totalData" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" WHERE 
+  to_char("releaseDate", 'FMMonth') = $1 AND to_char("releaseDate", 'FMYYYY') = $2`;
+
+  const values = [filter.month, filter.year];
+  db.query(sql, values, callback);
+};

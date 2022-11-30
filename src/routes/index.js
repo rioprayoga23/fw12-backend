@@ -20,4 +20,6 @@ routes.use("/transactions", require("./transactions.router"));
 
 routes.use("/auth", require("./auth.router"));
 
+routes.use("/profile", authMiddleware, require("./profile.router"));
+
 module.exports = routes;
