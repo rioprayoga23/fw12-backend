@@ -316,9 +316,9 @@ ADD CONSTRAINT "fk_transactions_paymentMethodId"
 FOREIGN KEY ("paymentMethodId") REFERENCES "paymentMethod"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE "transactions" 
-ADD CONSTRAINT "fk_transactions_reservedSeatId" 
-FOREIGN KEY ("reservedSeatId") REFERENCES "reservedSeat"(id) 
+ALTER TABLE "reservedSeat" 
+ADD CONSTRAINT "fk_reservedSeat_transactionId" 
+FOREIGN KEY ("transactionId") REFERENCES "transactions"(id) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
 
@@ -398,5 +398,11 @@ ALTER TABLE genre ADD CONSTRAINT "UniqueNameGenre" UNIQUE (name);
 
 ALTER TABLE users ADD CONSTRAINT "UniquePhoneNumberUsers" UNIQUE ("phoneNumber");
 
-SELECT m.id, m.picture, m.title, m."releaseDate", string_agg(g.name,', ') AS genre, m."createdAt" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" WHERE to_char("releaseDate", 'FMMonth') = 'December' AND to_char("releaseDate", 'FMYYYY') = '2022' AND m.title LIKE '%Naruto%' GROUP BY m.id;
+ALTER TABLE transactions
+DROP COLUMN "reservedSeatId";
 
+BEGIN;
+INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","movieScheduleId","fullName",email,"phoneNumber","paymentMethodId","idStatus") VALUES (9,'1674371007',8,4,22,'rio prayoga','rio@gmail.com','089789765789',4,1);
+
+INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ('D4',currval(pg_get_serial_sequence('transactions','id')));
+COMMIT;
