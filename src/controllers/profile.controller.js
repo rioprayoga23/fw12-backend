@@ -8,6 +8,7 @@ const {
 } = require("../models/users.model");
 
 const fs = require("fs");
+const fm = require("fs-extra");
 
 exports.readAllProfile = (req, res) => {
   const sortable = ["name", "createdAt", "updatedAt"];
@@ -43,15 +44,21 @@ exports.updateProfile = (req, res) => {
   if (req.file) {
     req.body.picture = req.file.filename;
     readUser(req.params.id, (error, results) => {
-      if (results.rows.length > 0) {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      if (results.rows.length) {
         const [user] = results.rows;
-        if (user.picture) {
+        fm.ensureFile(`uploads/${user.picture}`, (error) => {
+          if (error) {
+            return errorHandler(error, res);
+          }
           fs.rm(`uploads/${user.picture}`, (error) => {
             if (error) {
               return errorHandler(error, res);
             }
           });
-        }
+        });
       }
     });
   }

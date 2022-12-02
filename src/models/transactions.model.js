@@ -94,9 +94,9 @@ exports.deleteTransaction = (id, callback) => {
   db.query(sql, values, callback);
 };
 
-exports.createOrder = async (data, callback) => {
+exports.createOrder = async (data, userId, callback) => {
   const dataBody = {
-    userId: data.userId,
+    userId: userId,
     bookingDate: data.bookingDate,
     movieId: data.movieId,
     cinemaId: data.cinemaId,
@@ -108,7 +108,6 @@ exports.createOrder = async (data, callback) => {
     idStatus: data.idStatus,
     seatNum: data.seatNum,
   };
-
   try {
     await db.query("BEGIN");
 

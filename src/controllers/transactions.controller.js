@@ -106,7 +106,7 @@ exports.deleteTransaction = (req, res) => {
 };
 
 exports.createOrder = (req, res) => {
-  createOrder(req.body, (error, results) => {
+  createOrder(req.body, req.userData.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
     }

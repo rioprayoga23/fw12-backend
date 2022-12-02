@@ -3,7 +3,7 @@ const authMiddleware = require("../middleware/auth.middleware");
 const routes = require("express").Router();
 
 routes.use("/users", require("./users.router"));
-routes.use("/movies", authMiddleware, require("./movies.router"));
+routes.use("/movies", require("./movies.router"));
 routes.use("/genre", require("./genre.router"));
 routes.use("/casts", require("./casts.router"));
 routes.use("/status", require("./status.router"));
