@@ -43,7 +43,7 @@ exports.readProfile = (req, res) => {
 exports.updateProfile = (req, res) => {
   if (req.file) {
     req.body.picture = req.file.filename;
-    readUser(req.params.id, (error, results) => {
+    readUser(req.userData.id, (error, results) => {
       if (error) {
         return errorHandler(error, res);
       }
@@ -63,7 +63,7 @@ exports.updateProfile = (req, res) => {
     });
   }
 
-  updateUser(req.body, req.params.id, (error, results) => {
+  updateUser(req.body, req.userData.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
     }

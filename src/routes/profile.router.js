@@ -9,6 +9,6 @@ const userRouter = require("express").Router();
 
 userRouter.get("/", readAllProfile);
 userRouter.get("/:id", readProfile);
-userRouter.patch("/:id", uploadMiddleware, updateProfile);
+userRouter.patch("/", uploadMiddleware, updateProfile);
 
 module.exports = userRouter;
