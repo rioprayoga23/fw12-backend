@@ -27,7 +27,7 @@ exports.readAllMovies = (req, res) => {
         success: true,
         message: "List all movies",
         pageInfo,
-        data: results.rows,
+        results: results.rows,
       });
     });
   });
@@ -55,7 +55,7 @@ exports.readMovie = (req, res) => {
     return res.status(200).json({
       success: true,
       message: `Detail Movie ${req.params.id}`,
-      data: results.rows[0],
+      results: results.rows[0],
     });
   });
 };
@@ -89,7 +89,8 @@ exports.updateMovie = (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      message: results.rows[0],
+      message: "Movie updated",
+      results: results.rows[0],
     });
   });
 };
@@ -102,7 +103,7 @@ exports.deleteMovie = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Delete Movie successfully",
-      data: results.rows[0],
+      results: results.rows[0],
     });
   });
 };
@@ -118,7 +119,7 @@ exports.nowShowing = (req, res) => {
         success: true,
         message: "List Now Showing",
         pageInfo,
-        data: results.rows,
+        results: results.rows,
       });
     });
   });
@@ -135,7 +136,7 @@ exports.upComing = (req, res) => {
         success: true,
         message: "Upcoming Now showing",
         pageInfo,
-        data: results.rows,
+        results: results.rows,
       });
     });
   });

@@ -60,7 +60,7 @@ exports.nowShowing = (filter, callback) => {
 };
 
 exports.countNowShowing = (filter, callback) => {
-  const sql = `SELECT COUNT("title") AS "totalData" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" JOIN "movieSchedules" ms ON ms."movieId" = m.id WHERE NOW() BETWEEN ms."startDate" AND ms."endDate" AND m.title LIKE $1`;
+  const sql = `SELECT COUNT("title") AS "totalData" FROM movies m JOIN "movieSchedules" ms ON ms."movieId" = m.id WHERE NOW() BETWEEN ms."startDate" AND ms."endDate" AND m.title LIKE $1`;
 
   const values = [`%${filter.search}%`];
   db.query(sql, values, callback);
@@ -79,7 +79,7 @@ exports.upComing = (filter, callback) => {
 };
 
 exports.countUpComing = (filter, callback) => {
-  const sql = `SELECT COUNT("title") AS "totalData" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" WHERE 
+  const sql = `SELECT COUNT("title") AS "totalData" FROM movies WHERE 
   to_char("releaseDate", 'FMMonth') = $1 AND to_char("releaseDate", 'FMYYYY') = $2`;
 
   const values = [filter.month, filter.year];
