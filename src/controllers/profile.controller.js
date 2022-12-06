@@ -28,7 +28,7 @@ exports.readAllProfile = (req, res) => {
 };
 
 exports.readProfile = (req, res) => {
-  readUser(req.params.id, (error, results) => {
+  readUser(req.userData.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
     }
