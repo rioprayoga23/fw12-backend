@@ -160,7 +160,29 @@ VALUES (2,'56789');
 -- *movies
 SELECT * FROM movies;
 INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
-VALUES ('Spiderman','https:://spiderman.jpg','1669100607','jhon doe','02:15:00','Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, placeat ratione. Aut eveniet, sapiente iusto odio nesciunt odit magni ducimus');
+VALUES ('Harry Potter',null,'2022-12-23','','02:15:00','Harry Potter and the Philosopher’s Stone, also called Harry Potter and the Sorcerer’s Stone, the first novel in the immensely popular Harry Potter series by British writer J.K. Rowling. It was first published in Britain in 1997 and appeared in the United States the following year under the title Harry Potter and the Sorcerer’s Stone. The book’s imaginative story line about a boy wizard made it an enduring hit with both children and adults');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('Fast and Fourius',null,'2022-12-20','Justin lin','02:15:00','The Fast and the Furious adalah sebuah seri film aksi, yang berpusat balapan jalanan liar dan perampokan. Didistribusikan oleh Universal Pictures, seri ini dimulai dengan film tahun 2001 berjudul The Fast dan Furious; diikuti oleh tujuh sekuel dan dua film pendek');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('Marvel End Game',null,'2022-12-15','Joe Russo','02:15:00','Melanjutkan Avengers Infinity War, dimana kejadian setelah Thanos berhasil mendapatkan semua infinity stones dan memusnahkan 50% semua mahluk hidup di alam semesta. Akankah para Avengers berhasil mengalahkan Thanos?');
+-- *end movies
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('Thor Love Thunder',null,'2022-12-12','Joe Russo','02:15:00','Ketika Thor yang arogan mengacaukan gencatan senjata antara Asgardians dan Giants Frost, Odin sang raja Asgard membuangnya ke bumi. Kini, Thor harus membuktikan bahwa dirinya layak atas takdirnya.');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('The end of F***ing World',null,'2022-12-11','Justin','01:15:00','Serial ini bercerita tentang James (Alex Lawther), seorang remaja berusia 17 tahun yang mempercayai dirinya sebagai seorang psikopat dan seorang remaja sosiopat bernama Alyssa (Jessica Barden), teman sekelas James, seorang pemberontak.');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('The end of F***ing World Season 2',null,'2022-12-30','Justin','01:15:00','Serial ini bercerita tentang James (Alex Lawther), seorang remaja berusia 17 tahun yang mempercayai dirinya sebagai seorang psikopat dan seorang remaja sosiopat bernama Alyssa (Jessica Barden), teman sekelas James, seorang pemberontak.');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('Captain America',null,'2022-12-30','Joe Jhonston','01:15:00','Steve Rogers, ditolak masuk militer karena tidak layak. Kecewa, ia kemudian menjadi relawan untuk sebuah program rahasia, yang membuatnya menjelma menjadi seorang prajurit luar biasa, Captain America.');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('Hulk',null,'2022-12-23','Joe Jhonston','01:15:00','Hulk, adalah tokoh pahlawan super fiksi yang ada pada Marvel Comics. DIciptakan oleh Stan Lee dan Jack Kirby, tokoh ini pertama kali muncul di The Incredible Hulk pada tanggal 1 Mei 1962 ');
 -- *end movies
 
 -- *cast
