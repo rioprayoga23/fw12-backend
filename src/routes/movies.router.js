@@ -7,6 +7,8 @@ const {
   nowShowing,
   upComing,
 } = require("../controllers/movies.controller");
+const authMiddleware = require("../middleware/auth.middleware");
+const uploadMiddleware = require("../middleware/upload.middleware");
 
 const moviesRouter = require("express").Router();
 
@@ -14,8 +16,8 @@ moviesRouter.get("/", readAllMovies);
 moviesRouter.get("/now", nowShowing);
 moviesRouter.get("/upcoming", upComing);
 moviesRouter.get("/:id", readMovie);
-moviesRouter.post("/", createMovie);
-moviesRouter.patch("/:id", updateMovie);
+moviesRouter.post("/", authMiddleware, uploadMiddleware, createMovie);
+moviesRouter.patch("/:id", authMiddleware, uploadMiddleware, updateMovie);
 moviesRouter.delete("/:id", deleteMovie);
 
 module.exports = moviesRouter;

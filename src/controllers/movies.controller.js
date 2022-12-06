@@ -13,6 +13,9 @@ const {
   countUpComing,
 } = require("../models/movies.model");
 
+const fs = require("fs");
+const fm = require("fs-extra");
+
 exports.readAllMovies = (req, res) => {
   const sortable = ["name", "createdAt", "updatedAt"];
   filter(req.query, sortable, readCountAllMovies, res, (filter, pageInfo) => {
@@ -31,13 +34,15 @@ exports.readAllMovies = (req, res) => {
 };
 
 exports.createMovie = (req, res) => {
+  req.body.picture = req.file.filename;
   createMovie(req.body, (error, results) => {
     if (error) {
       return errorHandler(error, res);
     }
     return res.status(200).json({
       success: true,
-      message: results.rows[0],
+      message: "Create movie success",
+      results: results.rows[0],
     });
   });
 };
@@ -56,6 +61,28 @@ exports.readMovie = (req, res) => {
 };
 
 exports.updateMovie = (req, res) => {
+  if (req.file) {
+    req.body.picture = req.file.filename;
+    readMovie(req.params.id, (error, results) => {
+      if (error) {
+        return errorHandler(error, res);
+      }
+      if (results.rows.length) {
+        const [user] = results.rows;
+        fm.ensureFile(`uploads/${user.picture}`, (error) => {
+          if (error) {
+            return errorHandler(error, res);
+          }
+          fs.rm(`uploads/${user.picture}`, (error) => {
+            if (error) {
+              return errorHandler(error, res);
+            }
+          });
+        });
+      }
+    });
+  }
+
   updateMovie(req.body, req.params.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
