@@ -1,7 +1,7 @@
 const db = require("../helpers/db.helper");
 
 exports.readAllMovies = (filter, callback) => {
-  const sql = `SELECT * FROM movies WHERE "title" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const sql = `SELECT m.id, m.picture, m.title, string_agg(g.name,', ') AS genre, m."createdAt" FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" WHERE "title" LIKE $1 GROUP BY m.id ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
   const values = [`%${filter.search}%`, filter.limit, filter.offset];
   db.query(sql, values, callback);
 };
@@ -22,7 +22,7 @@ exports.createMovie = (data, callback) => {
 };
 
 exports.readMovie = (id, callback) => {
-  const sql = "SELECT * FROM movies WHERE id = $1";
+  const sql = `SELECT m.id, m.picture, m.title, string_agg(distinct g.name,', ') AS genre,m."releaseDate",m.director, extract(hours from m.duration) AS hours, extract(minute from m.duration) AS minutes,string_agg(distinct c.name,', ') AS casts,m.synopsis FROM movies m JOIN "movieGenre" mg ON mg."movieId" = m.id JOIN genre g ON g.id = mg."genreId" JOIN "movieCast" mc ON mc."movieId" =m.id JOIN casts c ON c.id = mc."castId" WHERE m.id = $1 GROUP BY m.id`;
   const values = [id];
   db.query(sql, values, callback);
 };
