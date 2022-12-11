@@ -115,6 +115,7 @@ CREATE TABLE "transactions"(
 CREATE TABLE "reservedSeat"(
     "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "seatNum" VARCHAR(225),
+    "transactionId" INT,
     "createdAt" TIMESTAMP DEFAULT now(),
     "updatedAt" TIMESTAMP 
 );
