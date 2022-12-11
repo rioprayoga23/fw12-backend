@@ -183,6 +183,9 @@ VALUES ('Captain America',null,'2022-12-30','Joe Jhonston','01:15:00','Steve Rog
 
 INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
 VALUES ('Hulk',null,'2022-12-23','Joe Jhonston','01:15:00','Hulk, adalah tokoh pahlawan super fiksi yang ada pada Marvel Comics. DIciptakan oleh Stan Lee dan Jack Kirby, tokoh ini pertama kali muncul di The Incredible Hulk pada tanggal 1 Mei 1962 ');
+
+INSERT INTO movies (title,picture,"releaseDate",director,duration,synopsis)
+VALUES ('Avatar the way of water',null,'2022-12-29','James Cameroon','01:15:00','Seorang Marinir lumpuh dikirim ke bulan Pandora untuk menjalani misi khusus namun, ia justru dilema antara mengikuti perintah atau melindungi dunia baru yang iya rasakan seperti rumah.');
 -- *end movies
 
 -- *cast
