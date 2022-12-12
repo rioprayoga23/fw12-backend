@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 
+require("dotenv").config({
+  path: ".env",
+});
+
 const app = express();
 const port = process.env.PORT || 8888;
 
@@ -11,10 +15,6 @@ app.use(cors());
 app.use("/uploads", express.static("uploads/"));
 
 app.use("/", require("./src/routes"));
-
-require("dotenv").config({
-  path: ".env",
-});
 
 app.get("/", (req, res) => {
   res.status(200).json({
