@@ -16,6 +16,12 @@ const {
 
 exports.login = (req, res) => {
   readUserByEmail(req.body.email, (error, results) => {
+    if (results.rows.length <= 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Email not registered",
+      });
+    }
     if (results.rows.length > 0) {
       const [user] = results.rows;
       if (user.password === req.body.password) {
@@ -23,13 +29,13 @@ exports.login = (req, res) => {
         return res.status(200).json({
           success: true,
           message: "Login success",
-          data: {
+          results: {
             token: token,
           },
         });
       }
       return res.status(401).json({
-        success: true,
+        success: false,
         message: "Email or Password Invalid",
       });
     }
@@ -47,7 +53,7 @@ exports.register = (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Register Success",
-        data: { token },
+        results: { token },
       });
     }
   });
@@ -77,7 +83,7 @@ exports.forgotPassword = (req, res) => {
       });
     } else {
       return res.status(400).json({
-        success: true,
+        success: false,
         message: "User not found",
       });
     }
