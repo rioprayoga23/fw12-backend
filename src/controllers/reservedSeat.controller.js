@@ -3,7 +3,7 @@ const {
   createReservedSeat,
   updateReservedSeat,
   deleteReservedSeat,
-} = require("../models/ReservedSeat.model");
+} = require("../models/reservedSeat.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
 
