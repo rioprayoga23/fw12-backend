@@ -112,12 +112,17 @@ exports.resetPassword = (req, res) => {
       if (results.rows.length > 0) {
         const [resetReq] = results.rows;
         if (
-          new Date(resetReq.createdAt).getTime() + 60 * 1000 * 3 <
+          new Date(resetReq.createdAt).getTime() + 60 * 1000 * 1 <
           new Date().getTime()
         ) {
-          return res.status(400).json({
-            success: false,
-            message: "Code is expired",
+          deleteForgotPassword(resetReq.id, (error, results) => {
+            if (error) {
+              return errorHandler(error, res);
+            }
+            return res.status(400).json({
+              success: false,
+              message: "Code is expired",
+            });
           });
         }
         updateUser(req.body, resetReq.userId, (error, results) => {
