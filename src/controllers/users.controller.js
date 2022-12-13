@@ -47,7 +47,7 @@ exports.createUser = (req, res) => {
   if (errorValidation) {
     return res.status(400).json({
       success: false,
-      message: errorValidation,
+      message: errorValidation.errors.msg,
     });
   }
   createUser(req.body, (error, results) => {
