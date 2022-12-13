@@ -1,3 +1,5 @@
+const { check } = require("express-validator");
+
 const {
   login,
   register,
@@ -8,7 +10,11 @@ const {
 const authRouter = require("express").Router();
 
 authRouter.post("/login", login);
-authRouter.post("/register", register);
+authRouter.post(
+  "/register",
+  check("phoneNumber", "Phone Number invalid").isMobilePhone("id-ID"),
+  register
+);
 authRouter.post("/forgotPassword", forgotPassword);
 authRouter.post("/resetPassword", resetPassword);
 

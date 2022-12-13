@@ -1,5 +1,3 @@
-const { validationResult } = require("express-validator");
-
 const {
   readAllUsers,
   readUser,
@@ -43,13 +41,6 @@ exports.readUser = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  const errorValidation = validationResult(req).array();
-  if (errorValidation) {
-    return res.status(400).json({
-      success: false,
-      message: errorValidation,
-    });
-  }
   createUser(req.body, (error, results) => {
     if (error) {
       errorHandler(error, res);
