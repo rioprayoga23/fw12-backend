@@ -21,7 +21,7 @@ exports.readAllProfile = (req, res) => {
         success: true,
         message: "List all users",
         pageInfo,
-        data: results.rows,
+        results: results.rows,
       });
     });
   });
@@ -35,7 +35,7 @@ exports.readProfile = (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: results.rows,
+      results: results.rows[0],
     });
   });
 };
@@ -70,7 +70,7 @@ exports.updateProfile = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Profile updated",
-      data: results.rows[0],
+      results: results.rows[0],
     });
   });
 };
