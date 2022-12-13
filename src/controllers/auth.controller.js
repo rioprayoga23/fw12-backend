@@ -49,7 +49,10 @@ exports.register = (req, res) => {
   if (!errorValidation.isEmpty()) {
     return res.status(400).json({
       success: false,
-      message: errorValidation.array().map((e) => e.msg),
+      message: errorValidation
+        .array()
+        .map((e) => e.msg)
+        .toString(),
     });
   }
   createUser(req.body, (error, results) => {
