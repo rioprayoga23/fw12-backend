@@ -43,11 +43,11 @@ exports.readUser = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  const errorValidation = validationResult(req);
+  const errorValidation = validationResult(req).array();
   if (errorValidation) {
     return res.status(400).json({
       success: false,
-      message: errorValidation.array(),
+      message: errorValidation.msg,
     });
   }
   createUser(req.body, (error, results) => {
