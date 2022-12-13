@@ -12,6 +12,7 @@ const authRouter = require("express").Router();
 authRouter.post("/login", login);
 authRouter.post(
   "/register",
+  check("email", "Email invalid").isEmail(),
   check("phoneNumber", "Phone Number invalid").isMobilePhone("id-ID"),
   register
 );
