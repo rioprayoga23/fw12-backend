@@ -45,11 +45,11 @@ exports.login = (req, res) => {
 };
 
 exports.register = (req, res) => {
-  const errorValidation = validationResult(req).array();
-  if (errorValidation) {
+  const errorValidation = validationResult(req);
+  if (!errorValidation.isEmpty()) {
     return res.status(400).json({
       success: false,
-      message: errorValidation[0].msg,
+      message: errorValidation.array()[0].msg,
     });
   }
   createUser(req.body, (error, results) => {
