@@ -3,7 +3,7 @@ const { errorHandler } = require("../helpers/errorHandler.helper");
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "uploads/");
+    callback(null, require("path").join(process.cwd(), "uploads"));
   },
   filename: (req, file, callback) => {
     const getExtension = file.originalname.split(".");

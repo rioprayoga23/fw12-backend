@@ -49,16 +49,22 @@ exports.updateProfile = (req, res) => {
       }
       if (results.rows.length) {
         const [user] = results.rows;
-        fm.ensureFile(`uploads/${user.picture}`, (error) => {
-          if (error) {
-            return errorHandler(error, res);
-          }
-          fs.rm(`uploads/${user.picture}`, (error) => {
+        fm.ensureFile(
+          require("path").join(process.cwd(), "uploads", user.picture),
+          (error) => {
             if (error) {
               return errorHandler(error, res);
             }
-          });
-        });
+            fs.rm(
+              require("path").join(process.cwd(), "uploads", user.picture),
+              (error) => {
+                if (error) {
+                  return errorHandler(error, res);
+                }
+              }
+            );
+          }
+        );
       }
     });
   }
