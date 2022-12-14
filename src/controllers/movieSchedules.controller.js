@@ -81,7 +81,7 @@ exports.getScheduleByMovieId = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "List of schedules",
-      data: results.rows,
+      results: results.rows,
     });
   });
 };
