@@ -4,9 +4,11 @@ const {
   createMovieSchedule,
   updateMovieSchedule,
   deleteMovieSchedule,
+  getScheduleByMovieId,
 } = require("../models/movieSchedules.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
+const { Result } = require("express-validator");
 
 exports.readAllMovieSchedules = (req, res) => {
   readAllMovieSchedules((error, results) => {
@@ -67,6 +69,19 @@ exports.deleteMovieSchedule = (req, res) => {
       success: true,
       message: "Delete MovieGenre successfully",
       data: results.rows[0],
+    });
+  });
+};
+
+exports.getScheduleByMovieId = (req, res) => {
+  getScheduleByMovieId(req.query, req.params.id, (error, results) => {
+    if (error) {
+      errorHandler(error, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "List of schedules",
+      data: results.rows,
     });
   });
 };
