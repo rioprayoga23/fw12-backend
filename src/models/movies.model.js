@@ -86,10 +86,11 @@ exports.countUpComing = (filter, callback) => {
   db.query(sql, values, callback);
 };
 
-exports.getCity = (data, callback) => {
-  const sql = `SELECT c.name FROM "movieSchedules" ms 
- JOIN cinemas c on c.id = ms."cinemaId" WHERE ms.id = 35`;
+exports.getCity = (id, data, callback) => {
+  const sql = `SELECT c.city FROM movies m
+JOIN "movieSchedules" ms ON ms."movieId" = m.id
+JOIN cinemas c on c.id = ms."cinemaId" WHERE m.id = $1 AND TO_DATE($2, 'YYYY-MM-DD') BETWEEN ms."startDate" AND ms."endDate"`;
 
-  // const values = [filter.month, filter.year];
-  // db.query(sql, values, callback);
+  const values = [id, data.date];
+  db.query(sql, values, callback);
 };

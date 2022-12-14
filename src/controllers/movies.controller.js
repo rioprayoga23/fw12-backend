@@ -11,10 +11,12 @@ const {
   upComing,
   countNowShowing,
   countUpComing,
+  getCity,
 } = require("../models/movies.model");
 
 const fs = require("fs");
 const fm = require("fs-extra");
+const { Result } = require("express-validator");
 
 exports.readAllMovies = (req, res) => {
   const sortable = ["name", "createdAt", "updatedAt"];
@@ -142,4 +144,16 @@ exports.upComing = (req, res) => {
   });
 };
 
-exports.getCity = (req, res) => {};
+exports.getCity = (req, res) => {
+  console.log(req.params.id, req.query);
+  getCity(req.params.id, req.query, (error, results) => {
+    if (error) {
+      return errorHandler(error, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "List of city",
+      results: results.rows,
+    });
+  });
+};
