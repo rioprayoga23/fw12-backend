@@ -35,7 +35,7 @@ exports.deleteMovieSchedule = (id, callback) => {
 };
 
 exports.getScheduleByMovieId = (data, id, callback) => {
-  const sql = `SELECT ms.price,c.picture,c.name,c.address,c.city,ARRAY_AGG(mt.time) AS time FROM "movies" m
+  const sql = `SELECT ms.id, ms.price,c.picture,c.name,c.address,c.city,ARRAY_AGG(mt.time) AS time FROM "movies" m
 JOIN "movieSchedules" ms ON ms."movieId" = m.id
 JOIN cinemas c ON c.id = ms."cinemaId" 
 JOIN "movieScheduleTimes" mt ON mt."movieScheduleId" = ms.id 
