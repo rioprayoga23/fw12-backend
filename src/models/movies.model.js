@@ -85,3 +85,11 @@ exports.countUpComing = (filter, callback) => {
   const values = [filter.month, filter.year];
   db.query(sql, values, callback);
 };
+
+exports.getCity = (data, callback) => {
+  const sql = `SELECT c.name FROM "movieSchedules" ms 
+ JOIN cinemas c on c.id = ms."cinemaId" WHERE ms.id = 35`;
+
+  // const values = [filter.month, filter.year];
+  // db.query(sql, values, callback);
+};

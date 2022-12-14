@@ -1,8 +1,7 @@
 const { Pool } = require("pg");
 
 const db = new Pool({
-  connectionString:
-    process.env.DATABASE_URL || "postgresql:postgres:1@localhost:5432/tiketku",
+  connectionString: process.env.DATABASE_URL,
 });
 
 db.connect((err) => {

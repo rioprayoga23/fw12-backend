@@ -141,3 +141,5 @@ exports.upComing = (req, res) => {
     });
   });
 };
+
+exports.getCity = (req, res) => {};
