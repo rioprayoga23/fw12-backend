@@ -111,7 +111,7 @@ exports.createOrder = async (data, userId, callback) => {
   try {
     await db.query("BEGIN");
 
-    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId,"fullName",email,"phoneNumber","paymentMethodId","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`;
+    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId,"fullName",email,"phoneNumber","paymentMethodId","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`;
 
     const trxQuery = await db.query(sqlTransaction, [
       dataBody.userId,
@@ -122,7 +122,7 @@ exports.createOrder = async (data, userId, callback) => {
       dataBody.email,
       dataBody.phoneNumber,
       dataBody.paymentMethodId,
-      dataBody.idStatus,
+      1,
     ]);
 
     const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
