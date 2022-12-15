@@ -111,7 +111,7 @@ exports.createOrder = async (data, userId, callback) => {
   try {
     await db.query("BEGIN");
 
-    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId,"fullName",email,"phoneNumber","paymentMethodId","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`;
+    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`;
 
     const trxQuery = await db.query(sqlTransaction, [
       dataBody.userId,
