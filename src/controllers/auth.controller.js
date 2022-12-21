@@ -73,7 +73,6 @@ exports.register = (req, res) => {
 
 exports.forgotPassword = (req, res) => {
   const { email } = req.body;
-  console.log(email);
   readUserByEmail(email, (error, results) => {
     if (error) {
       return errorHandler(error, res);
