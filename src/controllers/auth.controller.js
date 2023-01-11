@@ -16,7 +16,7 @@ const {
 } = require("../models/forgotPassword.model");
 
 exports.login = (req, res) => {
-  readUserByEmail(req.body.email, (error, results) => {
+  readUserByEmail(req.body.email, async (error, results) => {
     if (results.rows.length <= 0) {
       return res.status(404).json({
         success: false,
@@ -25,7 +25,7 @@ exports.login = (req, res) => {
     }
     if (results.rows.length > 0) {
       const [user] = results.rows;
-      if (argon2.verify(user.password, req.body.password)) {
+      if (await argon2.verify(user.password, req.body.password)) {
         const token = jwt.sign({ id: user.id }, "backend-secret");
         return res.status(200).json({
           success: true,
