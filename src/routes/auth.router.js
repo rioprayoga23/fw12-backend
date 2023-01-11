@@ -11,7 +11,7 @@ const { rules, validate } = require("../middleware/validator.middleware");
 const authRouter = require("express").Router();
 
 authRouter.post("/login", rules("login"), validate, login);
-authRouter.post("/register", rules("login"), validate, register);
+authRouter.post("/register", rules("register"), validate, register);
 authRouter.post("/forgotPassword", forgotPassword);
 authRouter.post("/resetPassword", resetPassword);
 
