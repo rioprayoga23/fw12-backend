@@ -18,6 +18,6 @@ authRouter.post(
   validate,
   forgotPassword
 );
-authRouter.post("/resetPassword", resetPassword);
+authRouter.post("/resetPassword", rules("register"), validate, resetPassword);
 
 module.exports = authRouter;
