@@ -114,23 +114,28 @@ exports.resetPassword = async (req, res) => {
             });
           });
         }
-        req.body.password = await argon2.hash(req.body.password);
-        updateUser(req.body, resetReq.userId, (error, results) => {
-          if (error) {
-            return errorHandler(error, res);
-          }
-          if (results.rows) {
-            deleteForgotPassword(resetReq.id, (error, results) => {
-              if (error) {
-                return errorHandler(error, res);
-              }
-              return res.status(200).json({
-                success: true,
-                message: "Password updated, please relogin",
+        const passwordHash = await argon2.hash(req.body.password);
+        updateUser(
+          req.body,
+          passwordHash,
+          resetReq.userId,
+          (error, results) => {
+            if (error) {
+              return errorHandler(error, res);
+            }
+            if (results.rows) {
+              deleteForgotPassword(resetReq.id, (error, results) => {
+                if (error) {
+                  return errorHandler(error, res);
+                }
+                return res.status(200).json({
+                  success: true,
+                  message: "Password updated, please relogin",
+                });
               });
-            });
+            }
           }
-        });
+        );
       } else {
         return res.status(400).json({
           success: false,
