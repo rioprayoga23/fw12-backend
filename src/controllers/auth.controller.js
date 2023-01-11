@@ -25,7 +25,7 @@ exports.login = (req, res) => {
     }
     if (results.rows.length > 0) {
       const [user] = results.rows;
-      if (user.password === req.body.password) {
+      if (argon2.verify(user.password, req.body.password)) {
         const token = jwt.sign({ id: user.id }, "backend-secret");
         return res.status(200).json({
           success: true,
