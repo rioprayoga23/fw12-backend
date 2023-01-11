@@ -16,11 +16,13 @@ exports.rules = (method) => {
         firstName: {
           in: ["body"],
           errorMessage: "First name is required",
+          optional: { options: { nullable: false } },
           isString: true,
         },
         lastName: {
           in: ["body"],
           errorMessage: "Last name is required",
+          optional: { options: { nullable: false } },
           isEmail: true,
         },
         email: {
