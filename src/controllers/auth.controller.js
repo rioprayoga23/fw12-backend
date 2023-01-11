@@ -1,5 +1,4 @@
-const { validationResult } = require("express-validator");
-
+const argon2 = require("argon2");
 const {
   readUserByEmail,
   createUser,
@@ -44,7 +43,8 @@ exports.login = (req, res) => {
   });
 };
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
+  req.body.password = await argon2.hash(req.body.password);
   createUser(req.body, (error, results) => {
     if (error) {
       errorHandler(error, res);
