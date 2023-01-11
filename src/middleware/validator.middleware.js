@@ -63,7 +63,7 @@ exports.rules = (method) => {
     }
     case "resetPassword": {
       return checkSchema({
-        newPassword: {
+        password: {
           in: ["body"],
           errorMessage:
             "Password must be at least 6 chars long, contain 1 number, 1 uppercase, 1 lowercase and 1 special char",
