@@ -93,9 +93,8 @@ exports.forgotPassword = (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   const { password, confirmPassword } = req.body;
-  req.body.password = await argon2.hash(req.body.password);
   if (password === confirmPassword) {
-    readForgotPasswordByEmailAndCode(req.body, (error, results) => {
+    readForgotPasswordByEmailAndCode(req.body, async (error, results) => {
       if (error) {
         errorHandler(error, res);
       }
@@ -115,6 +114,7 @@ exports.resetPassword = async (req, res) => {
             });
           });
         }
+        req.body.password = await argon2.hash(req.body.password);
         updateUser(req.body, resetReq.userId, (error, results) => {
           if (error) {
             return errorHandler(error, res);
