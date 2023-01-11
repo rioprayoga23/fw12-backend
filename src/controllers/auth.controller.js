@@ -45,16 +45,6 @@ exports.login = (req, res) => {
 };
 
 exports.register = (req, res) => {
-  const errorValidation = validationResult(req);
-  if (!errorValidation.isEmpty()) {
-    return res.status(400).json({
-      success: false,
-      message: errorValidation
-        .array()
-        .map((e) => e.msg)
-        .toString(),
-    });
-  }
   createUser(req.body, (error, results) => {
     if (error) {
       errorHandler(error, res);

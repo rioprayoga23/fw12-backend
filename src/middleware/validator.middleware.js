@@ -13,6 +13,16 @@ exports.rules = (method) => {
     }
     case "register": {
       return checkSchema({
+        firstName: {
+          in: ["body"],
+          errorMessage: "First name is required",
+          isString: true,
+        },
+        lastName: {
+          in: ["body"],
+          errorMessage: "Last name is required",
+          isEmail: true,
+        },
         email: {
           in: ["body"],
           isEmail: true,
