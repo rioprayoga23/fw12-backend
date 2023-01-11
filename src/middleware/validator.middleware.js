@@ -23,7 +23,7 @@ exports.rules = (method) => {
           in: ["body"],
           errorMessage: "Last name is required",
           optional: { options: { nullable: false } },
-          isEmail: true,
+          isString: true,
         },
         email: {
           in: ["body"],
@@ -33,6 +33,7 @@ exports.rules = (method) => {
         phoneNumber: {
           in: ["body"],
           errorMessage: "Phone Number is required",
+          optional: { options: { nullable: false } },
           isString: true,
         },
         password: {
