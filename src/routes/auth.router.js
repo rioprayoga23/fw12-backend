@@ -12,7 +12,12 @@ const authRouter = require("express").Router();
 
 authRouter.post("/login", rules("login"), validate, login);
 authRouter.post("/register", rules("register"), validate, register);
-authRouter.post("/forgotPassword", forgotPassword);
+authRouter.post(
+  "/forgotPassword",
+  rules("forgotPassword"),
+  validate,
+  forgotPassword
+);
 authRouter.post("/resetPassword", resetPassword);
 
 module.exports = authRouter;
