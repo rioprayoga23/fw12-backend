@@ -6,10 +6,11 @@ const {
   forgotPassword,
   resetPassword,
 } = require("../controllers/auth.controller");
+const { rules } = require("../middleware/validator.middleware");
 
 const authRouter = require("express").Router();
 
-authRouter.post("/login", login);
+authRouter.post("/login", rules("login"), login);
 authRouter.post(
   "/register",
   check("email", "Email invalid").isEmail(),
