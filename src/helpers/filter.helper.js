@@ -4,7 +4,8 @@ const filter = (data, sortable, countModel, res, callback) => {
   data.page = parseInt(data.page) || 1;
   data.limit = parseInt(data.limit) || 5;
   data.search = data.search || "";
-  data.sortBy = (data.sortBy && sortable.includes(data.sortBy)) || "createdAt";
+  data.sortBy =
+    data.sortBy && sortable.includes(data.sortBy) ? data.sortBy : "createdAt";
   data.sort = data.sort || "ASC";
   data.month =
     data.month || new Date().toLocaleString("default", { month: "long" });

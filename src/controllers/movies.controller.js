@@ -19,7 +19,8 @@ const fm = require("fs-extra");
 const { Result } = require("express-validator");
 
 exports.readAllMovies = (req, res) => {
-  const sortable = ["name", "createdAt", "updatedAt"];
+  const sortable = ["title", "createdAt", "updatedAt"];
+  console.log(req.query);
   filter(req.query, sortable, readCountAllMovies, res, (filter, pageInfo) => {
     readAllMovies(filter, (error, results) => {
       if (error) {
