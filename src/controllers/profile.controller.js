@@ -44,19 +44,6 @@ exports.readProfile = (req, res) => {
 };
 
 exports.updateProfile = (req, res) => {
-  // if (req.file) {
-  //   req.body.picture = req.file.path;
-  //   readUser(req.userData.id, async (error, results) => {
-  //     if (error) {
-  //       return errorHandler(error, res);
-  //     }
-  //     if (results.rows.length) {
-  //       const [user] = results.rows;
-  //       if (user.picture) {
-  //         const fileName = user.picture.split("/").pop()?.split(".")[0];
-  //         const cek = await cloudinary.uploader.destroy(`TiketKu/${fileName}`);
-  //       }
-  //     }
   //     // fm.ensureFile(
   //     //   require("path").join(process.cwd(), "uploads", user.picture),
   //     //   (error) => {
@@ -80,17 +67,12 @@ exports.updateProfile = (req, res) => {
     readUser(req.userData.id, async (error, results) => {
       if (error) {
         return errorHandler(error, res);
-      } else {
-        if (results.rows.length) {
-          const [user] = results.rows;
-          if (user.picture) {
-            const fileName = user.picture.split("/").pop()?.split(".")[0];
-            console.log(fileName);
-            const cek = await cloudinary.uploader.destroy(
-              `TiketKu/${fileName}`
-            );
-            console.log(cek);
-          }
+      }
+      if (results.rows.length) {
+        const [user] = results.rows;
+        if (user?.picture) {
+          const fileName = user.picture.split("/").pop()?.split(".")[0];
+          await cloudinary.uploader.destroy(`TiketKu/${fileName}`);
         }
       }
     });
