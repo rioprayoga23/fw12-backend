@@ -53,8 +53,8 @@ const uploadImage = multer({
   limits: { fileSize: 4000000 },
   fileFilter: (req, file, callback) => {
     const format = ["jpg", "png", "jpeg"];
-    const extension = file.originalname.split(".");
-    const cekFormatFile = format.includes(extension[extension.length - 1]);
+    const extension = path.extname(file.originalname).slice(1);
+    const cekFormatFile = format.includes(extension);
     if (!cekFormatFile) {
       return callback(new Error("Format picture not valid"));
     } else {
