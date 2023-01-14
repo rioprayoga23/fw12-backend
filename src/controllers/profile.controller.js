@@ -52,8 +52,9 @@ exports.updateProfile = async (req, res) => {
       }
       if (results.rows.length) {
         const [user] = results.rows;
-        if (user?.picture) {
-          const fileName = user?.picture?.split("/").pop()?.split(".")[0];
+        if (user.picture) {
+          const fileName = user.picture.split("/").pop()?.split(".")[0];
+          console.log(fileName);
           cloudinary.uploader.destroy(`TiketKu/${fileName}`);
         }
       }

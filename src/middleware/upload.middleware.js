@@ -50,6 +50,17 @@ const storage = new CloudinaryStorage({
 
 const uploadImage = multer({
   storage: storage,
+  limits: { fileSize: 4000000 },
+  fileFilter: (req, file, callback) => {
+    const format = ["jpg", "png", "jpeg"];
+    const extension = file.originalname.split(".");
+    const cekFormatFile = format.includes(extension[extension.length - 1]);
+    if (!cekFormatFile) {
+      return callback(new Error("Format picture not valid"));
+    } else {
+      return callback(null, true);
+    }
+  },
 }).single("picture");
 
 module.exports = (req, res, next) => {
