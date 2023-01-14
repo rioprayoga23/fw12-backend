@@ -32,7 +32,7 @@ exports.readUserByEmail = (email, callback) => {
   db.query(sql, values, callback);
 };
 
-exports.updateUser = (data, passwordHash, id, callback) => {
+exports.updateUser = (data, id, callback) => {
   const sql = `UPDATE users SET "picture" = COALESCE(NULLIF($1, ''), "picture"), "firstName" =COALESCE(NULLIF($2, ''), "firstName"), "lastName" =COALESCE(NULLIF($3, ''), "lastName"),"phoneNumber" =COALESCE(NULLIF($4, ''), "phoneNumber"),"email" =COALESCE(NULLIF($5, ''), "email"),"password" =COALESCE(NULLIF($6, ''), "password"), "updatedAt"=$7 WHERE "id" =$8 RETURNING *`;
 
   const { picture, firstName, lastName, phoneNumber, email, password } = data;
@@ -45,7 +45,7 @@ exports.updateUser = (data, passwordHash, id, callback) => {
     lastName,
     phoneNumber,
     email,
-    passwordHash,
+    password,
     new Date(),
     id,
   ];

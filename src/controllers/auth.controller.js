@@ -94,7 +94,6 @@ exports.forgotPassword = (req, res) => {
 exports.resetPassword = async (req, res) => {
   const { password, confirmPassword } = req.body;
   if (password === confirmPassword) {
-    const passwordHash = await argon2.hash(req.body.password);
     readForgotPasswordByEmailAndCode(req.body, async (error, results) => {
       if (error) {
         errorHandler(error, res);
@@ -115,27 +114,23 @@ exports.resetPassword = async (req, res) => {
             });
           });
         }
-        updateUser(
-          req.body,
-          passwordHash,
-          resetReq.userId,
-          (error, results) => {
-            if (error) {
-              return errorHandler(error, res);
-            }
-            if (results.rows) {
-              deleteForgotPassword(resetReq.id, (error, results) => {
-                if (error) {
-                  return errorHandler(error, res);
-                }
-                return res.status(200).json({
-                  success: true,
-                  message: "Password updated, please relogin",
-                });
-              });
-            }
+        req.body.password = await argon2.hash(req.body.password);
+        updateUser(req.body, resetReq.userId, (error, results) => {
+          if (error) {
+            return errorHandler(error, res);
           }
-        );
+          if (results.rows) {
+            deleteForgotPassword(resetReq.id, (error, results) => {
+              if (error) {
+                return errorHandler(error, res);
+              }
+              return res.status(200).json({
+                success: true,
+                message: "Password updated, please relogin",
+              });
+            });
+          }
+        });
       } else {
         return res.status(400).json({
           success: false,

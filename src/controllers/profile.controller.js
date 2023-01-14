@@ -9,6 +9,9 @@ const {
 
 const fs = require("fs");
 const fm = require("fs-extra");
+const argon2 = require("argon2");
+
+const cloudinary = require("cloudinary").v2;
 
 exports.readAllProfile = (req, res) => {
   const sortable = ["name", "createdAt", "updatedAt"];
@@ -40,35 +43,38 @@ exports.readProfile = (req, res) => {
   });
 };
 
-exports.updateProfile = (req, res) => {
+exports.updateProfile = async (req, res) => {
   if (req.file) {
-    req.body.picture = req.file.filename;
+    req.body.picture = req.file.path;
     readUser(req.userData.id, (error, results) => {
       if (error) {
         return errorHandler(error, res);
       }
       if (results.rows.length) {
         const [user] = results.rows;
-        fm.ensureFile(
-          require("path").join(process.cwd(), "uploads", user.picture),
-          (error) => {
-            if (error) {
-              return errorHandler(error, res);
-            }
-            fs.rm(
-              require("path").join(process.cwd(), "uploads", user.picture),
-              (error) => {
-                if (error) {
-                  return errorHandler(error, res);
-                }
-              }
-            );
-          }
-        );
+        if (user?.picture) {
+          const fileName = user?.picture?.split("/").pop()?.split(".")[0];
+          cloudinary.uploader.destroy(`TiketKu/${fileName}`);
+        }
       }
+      // fm.ensureFile(
+      //   require("path").join(process.cwd(), "uploads", user.picture),
+      //   (error) => {
+      //     if (error) {
+      //       return errorHandler(error, res);
+      //     }
+      //     fs.rm(
+      //       require("path").join(process.cwd(), "uploads", user.picture),
+      //       (error) => {
+      //         if (error) {
+      //           return errorHandler(error, res);
+      //         }
+      //       }
+      //     );
+      //   }
+      // );
     });
   }
-
   updateUser(req.body, req.userData.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
