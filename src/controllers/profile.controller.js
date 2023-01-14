@@ -43,36 +43,56 @@ exports.readProfile = (req, res) => {
   });
 };
 
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = (req, res) => {
+  // if (req.file) {
+  //   req.body.picture = req.file.path;
+  //   readUser(req.userData.id, async (error, results) => {
+  //     if (error) {
+  //       return errorHandler(error, res);
+  //     }
+  //     if (results.rows.length) {
+  //       const [user] = results.rows;
+  //       if (user.picture) {
+  //         const fileName = user.picture.split("/").pop()?.split(".")[0];
+  //         const cek = await cloudinary.uploader.destroy(`TiketKu/${fileName}`);
+  //       }
+  //     }
+  //     // fm.ensureFile(
+  //     //   require("path").join(process.cwd(), "uploads", user.picture),
+  //     //   (error) => {
+  //     //     if (error) {
+  //     //       return errorHandler(error, res);
+  //     //     }
+  //     //     fs.rm(
+  //     //       require("path").join(process.cwd(), "uploads", user.picture),
+  //     //       (error) => {
+  //     //         if (error) {
+  //     //           return errorHandler(error, res);
+  //     //         }
+  //     //       }
+  //     //     );
+  //     //   }
+  //     // );
+  //   });
+  // }
   if (req.file) {
     req.body.picture = req.file.path;
-    readUser(req.userData.id, (error, results) => {
+    readUser(req.userData.id, async (error, results) => {
       if (error) {
         return errorHandler(error, res);
-      }
-      if (results.rows.length) {
-        const [user] = results.rows;
-        if (user.picture) {
-          const fileName = user.picture.split("/").pop()?.split(".")[0];
-          cloudinary.uploader.destroy(`TiketKu/${fileName}`);
+      } else {
+        if (results.rows.length) {
+          const [user] = results.rows;
+          if (user.picture) {
+            const fileName = user.picture.split("/").pop()?.split(".")[0];
+            console.log(fileName);
+            const cek = await cloudinary.uploader.destroy(
+              `TiketKu/${fileName}`
+            );
+            console.log(cek);
+          }
         }
       }
-      // fm.ensureFile(
-      //   require("path").join(process.cwd(), "uploads", user.picture),
-      //   (error) => {
-      //     if (error) {
-      //       return errorHandler(error, res);
-      //     }
-      //     fs.rm(
-      //       require("path").join(process.cwd(), "uploads", user.picture),
-      //       (error) => {
-      //         if (error) {
-      //           return errorHandler(error, res);
-      //         }
-      //       }
-      //     );
-      //   }
-      // );
     });
   }
   updateUser(req.body, req.userData.id, (error, results) => {

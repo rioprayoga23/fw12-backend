@@ -65,7 +65,6 @@ const uploadImage = multer({
 
 module.exports = (req, res, next) => {
   uploadImage(req, res, (error) => {
-    console.log(error);
     if (error) {
       return res.status(400).json({
         success: false,
