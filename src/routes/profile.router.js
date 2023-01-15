@@ -9,12 +9,6 @@ const { rules, validate } = require("../middleware/validator.middleware");
 const userRouter = require("express").Router();
 
 userRouter.get("/", readProfile);
-userRouter.patch(
-  "/",
-  uploadMiddleware,
-  rules("resetPassword"),
-  validate,
-  updateProfile
-);
+userRouter.patch("/", uploadMiddleware, updateProfile);
 
 module.exports = userRouter;
