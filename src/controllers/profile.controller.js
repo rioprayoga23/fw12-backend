@@ -62,21 +62,21 @@ exports.updateProfile = async (req, res) => {
   //     // );
   //   });
   // }
-  if (req.file) {
-    req.body.picture = req.file.path;
-    readUser(req.userData.id, async (error, results) => {
-      if (error) {
-        return errorHandler(error, res);
-      }
-      if (results.rows.length) {
-        const [user] = results.rows;
-        if (user?.picture) {
-          const fileName = user.picture.split("/").pop()?.split(".")[0];
-          await cloudinary.uploader.destroy(`TiketKu/${fileName}`);
-        }
-      }
-    });
-  }
+  // if (req.file) {
+  //   req.body.picture = req.file.path;
+  //   readUser(req.userData.id, async (error, results) => {
+  //     if (error) {
+  //       return errorHandler(error, res);
+  //     }
+  //     if (results.rows.length) {
+  //       const [user] = results.rows;
+  //       if (user?.picture) {
+  //         const fileName = user.picture.split("/").pop()?.split(".")[0];
+  //         await cloudinary.uploader.destroy(`TiketKu/${fileName}`);
+  //       }
+  //     }
+  //   });
+  // }
   if (req.body.password) {
     req.body.password = await argon2.hash(req.body.password);
   }
