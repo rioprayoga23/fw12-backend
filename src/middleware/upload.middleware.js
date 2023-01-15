@@ -39,10 +39,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "TiketKu",
-    format: async (req, file) => {
-      path.extname(file.originalname).slice(1);
-      console.log(path.extname(file));
-    }, // supports promises as well
+    format: async (req, file) => path.extname(file.originalname).slice(1),
     public_id: (req, file) => {
       const randomNumber = Math.round(Math.random() * 90000);
       const filename = `${randomNumber}${Date.now()}`;
