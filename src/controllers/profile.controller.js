@@ -80,7 +80,9 @@ exports.updateProfile = async (req, res) => {
   if (req.body.password) {
     req.body.password = await argon2.hash(req.body.password);
   }
-  console.log(req.body.picture);
+  if (req.file) {
+    req.body.picture = req.file.path;
+  }
   updateUser(req.body, req.userData.id, (error, results) => {
     if (error) {
       return errorHandler(error, res);
