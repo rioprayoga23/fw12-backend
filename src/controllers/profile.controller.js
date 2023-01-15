@@ -43,7 +43,7 @@ exports.readProfile = (req, res) => {
   });
 };
 
-exports.updateProfile = (req, res) => {
+exports.updateProfile = async (req, res) => {
   //     // fm.ensureFile(
   //     //   require("path").join(process.cwd(), "uploads", user.picture),
   //     //   (error) => {
@@ -76,6 +76,9 @@ exports.updateProfile = (req, res) => {
         }
       }
     });
+  }
+  if (req.body.password) {
+    req.body.password = await argon2.hash(req.body.password);
   }
   updateUser(req.body, req.userData.id, (error, results) => {
     if (error) {
