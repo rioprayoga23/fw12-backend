@@ -14,7 +14,7 @@ exports.readAllPayments = (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      result: results.rows,
+      results: results.rows,
     });
   });
 };
