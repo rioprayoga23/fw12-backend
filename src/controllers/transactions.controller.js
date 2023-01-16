@@ -27,7 +27,7 @@ exports.readAllTransactions = (req, res) => {
           success: true,
           message: "List all transactions",
           pageInfo,
-          data: results.rows,
+          results: results.rows,
         });
       });
     }
@@ -42,7 +42,7 @@ exports.readTransaction = (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: results.rows,
+      results: results.rows,
     });
   });
 };
@@ -56,7 +56,7 @@ exports.createTransaction = (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Transaction added",
-        data: results.rows[0],
+        results: results.rows[0],
       });
     }
   });
@@ -79,7 +79,7 @@ exports.updateTransaction = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Transaction updated",
-      data: results.rows[0],
+      results: results.rows[0],
     });
     // }
   });
@@ -99,7 +99,7 @@ exports.deleteTransaction = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Transaction deleted",
-      data: results.rows[0],
+      results: results.rows[0],
     });
     // }
   });
@@ -113,7 +113,7 @@ exports.createOrder = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Create order success",
-      data: [results.trxQuery.rows[0], results.rsvQuery.rows[0]],
+      results: [results.trxQuery.rows[0], results.rsvQuery.rows[0]],
     });
   });
 };
