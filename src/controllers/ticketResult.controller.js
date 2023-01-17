@@ -8,7 +8,7 @@ exports.getTicketResult = (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      data: results.rows,
+      results: results.rows,
     });
   });
 };
