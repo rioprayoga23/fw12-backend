@@ -129,18 +129,15 @@ exports.createOrder = async (data, userId, callback) => {
       dataBody.bookingTime,
     ]);
 
-    // let rsvQuery;
-    const arraySeatnum = dataBody.seatNum;
-    arraySeatnum.forEach(async (item, index) => {
-      const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES (${item},currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
+    const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
 
-      await db.query(sqlReservedSeat);
-    });
+    const rsvQuery = await db.query(sqlReservedSeat, [dataBody.seatNum]);
+
     await db.query("COMMIT");
 
     const results = {
       trxQuery,
-      // rsvQuery,
+      rsvQuery,
     };
 
     callback(null, results);
