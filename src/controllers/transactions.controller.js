@@ -114,7 +114,7 @@ exports.createOrder = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Create order success",
-      results: [results.trxQuery.rows[0], results.rsvQuery.rows[0]],
+      results: results.trxQuery.rows[0],
     });
   });
 };
