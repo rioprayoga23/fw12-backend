@@ -135,8 +135,8 @@ exports.createOrder = async (data, userId, callback) => {
       const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
 
       rsvQuery = await db.query(sqlReservedSeat, [item]);
+      await db.query("COMMIT");
     });
-    await db.query("COMMIT");
 
     const results = {
       trxQuery,
