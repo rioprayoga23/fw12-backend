@@ -108,11 +108,12 @@ exports.createOrder = async (data, userId, callback) => {
     idStatus: data.idStatus,
     seatNum: data.seatNum,
     total: data.total,
+    total: data.bookingTime,
   };
   try {
     await db.query("BEGIN");
 
-    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus",total) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`;
+    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus",total,"bookingTime") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`;
 
     const trxQuery = await db.query(sqlTransaction, [
       dataBody.userId,
@@ -125,6 +126,7 @@ exports.createOrder = async (data, userId, callback) => {
       dataBody.paymentMethodId,
       1,
       dataBody.total,
+      dataBody.bookingTime,
     ]);
 
     const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
@@ -143,4 +145,13 @@ exports.createOrder = async (data, userId, callback) => {
     // db.query("ROLLBACK");
     callback(error, null);
   }
+};
+
+exports.historyOrder = (id, callback) => {
+  const sql = `SELECT t."bookingDate", m.title, c.picture from transactions t 
+  JOIN movies m ON m.id = t."movieId"
+  JOIN cinemas c ON c.id = t."cinemaId" 
+  WHERE t."userId" = $1`;
+  const values = [id];
+  db.query(sql, values, callback);
 };

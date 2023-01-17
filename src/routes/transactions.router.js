@@ -5,11 +5,13 @@ const {
   updateTransaction,
   deleteTransaction,
   createOrder,
+  historyOrder,
 } = require("../controllers/transactions.controller");
 
 const transactionRouter = require("express").Router();
 
 transactionRouter.get("/", readAllTransactions);
+transactionRouter.get("/history", historyOrder);
 transactionRouter.get("/:id", readTransaction);
 transactionRouter.post("/", createTransaction);
 transactionRouter.post("/createOrder", createOrder);

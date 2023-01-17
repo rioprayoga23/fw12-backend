@@ -6,6 +6,7 @@ const {
   deleteTransaction,
   readCountAllTransactions,
   createOrder,
+  historyOrder,
 } = require("../models/transactions.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
@@ -114,6 +115,19 @@ exports.createOrder = (req, res) => {
       success: true,
       message: "Create order success",
       results: [results.trxQuery.rows[0], results.rsvQuery.rows[0]],
+    });
+  });
+};
+
+exports.historyOrder = (req, res) => {
+  historyOrder(req.userData.id, (error, results) => {
+    if (error) {
+      return errorHandler(error, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "All history transactions",
+      results: results.rows,
     });
   });
 };
