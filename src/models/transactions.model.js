@@ -108,7 +108,7 @@ exports.createOrder = async (data, userId, callback) => {
     idStatus: data.idStatus,
     seatNum: data.seatNum,
     total: data.total,
-    total: data.bookingTime,
+    bookingTime: data.bookingTime,
   };
   try {
     await db.query("BEGIN");
