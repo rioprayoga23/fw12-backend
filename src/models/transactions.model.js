@@ -130,7 +130,8 @@ exports.createOrder = async (data, userId, callback) => {
     ]);
 
     // let rsvQuery;
-    dataBody.seatNum.forEach(async (item, index) => {
+    const arraySeatnum = dataBody.seatNum;
+    arraySeatnum.forEach(async (item, index) => {
       const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES (${item},currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
 
       await db.query(sqlReservedSeat);
