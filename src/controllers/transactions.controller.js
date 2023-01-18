@@ -135,6 +135,7 @@ exports.createOrder = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Transactions success",
+      results: trxId,
     });
   } catch (error) {
     return res.status(400).json({
