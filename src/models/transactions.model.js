@@ -131,7 +131,7 @@ exports.createOrder = async (data, userId, callback) => {
 
     const trxId = trxQuery.rows[0].id;
     const seats = dataBody.seatNum.map((num) => `${num},${trxId}`).join(", ");
-    const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ${seats}`;
+    const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ${seats} RETURNING *`;
 
     const rsvQuery = await db.query(sqlReservedSeat);
 
