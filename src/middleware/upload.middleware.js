@@ -50,7 +50,7 @@ const storage = new CloudinaryStorage({
 
 const uploadImage = multer({
   storage: storage,
-  limits: { fileSize: 400000 },
+  limits: { fileSize: 4000000 },
   fileFilter: (req, file, callback) => {
     const format = ["jpg", "png", "jpeg"];
     const extension = path.extname(file.originalname).slice(1);
