@@ -127,7 +127,7 @@ exports.createOrder = async (req, res) => {
     while (i < req.body.seatNum.length) {
       const data = {
         seatNum: req.body.seatNum[i],
-        transactionsId: trxId,
+        transactionId: trxId,
       };
       await createReservedSeat(data);
       i++;
