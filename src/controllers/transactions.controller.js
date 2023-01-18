@@ -124,19 +124,20 @@ exports.createOrder = async (req, res) => {
   try {
     const { id: trxId } = await createOrder(req.body, req.userData.id);
     let i = 0;
-
-    const data = {
-      seatNum: req.body.seatNum,
-      transactionId: trxId,
-    };
-    await createReservedSeat(data);
-
+    while (i < req.body.seatNum.length) {
+      const data = {
+        seatNum: req.body.seatNum[i],
+        transactionsId: trxId,
+      };
+      await createReservedSeat(data);
+      i++;
+    }
     return res.status(200).json({
       success: true,
       message: "Transactions success",
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(400).json({
       success: true,
       message: error.message,
     });

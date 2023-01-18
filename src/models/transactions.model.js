@@ -95,22 +95,6 @@ exports.deleteTransaction = (id, callback) => {
 };
 
 exports.createOrder = async (data, userId) => {
-  // const dataBody = {
-  //   userId: userId,
-  //   bookingDate: data.bookingDate,
-  //   movieId: data.movieId,
-  //   cinemaId: data.cinemaId,
-  //   movieScheduleId: data.movieScheduleId,
-  //   fullName: data.fullName,
-  //   email: data.email,
-  //   phoneNumber: data.phoneNumber,
-  //   paymentMethodId: data.paymentMethodId,
-  //   idStatus: data.idStatus,
-  //   seatNum: data.seatNum,
-  //   total: data.total,
-  //   bookingTime: data.bookingTime,
-  // };
-
   const sql = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus",total,"bookingTime") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`;
 
   const results = await db.query(sql, [

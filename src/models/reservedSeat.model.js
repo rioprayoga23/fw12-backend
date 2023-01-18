@@ -6,11 +6,11 @@ exports.readAllReservedSeat = (callback) => {
 };
 
 exports.createReservedSeat = async (data) => {
-  const seats = data.seatNum
-    .map((num) => `(${num}, ${data.transactionId})`)
-    .join(", ");
-  const sql = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ${seats} RETURNING *`;
-  const results = await db.query(sql);
+  const { seatNum, transactionId } = data;
+  const sql =
+    'INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,$2) RETURNING *';
+  const values = [seatNum, transactionId];
+  const results = await db.query(sql, values);
   return results.rows[0];
 };
 
