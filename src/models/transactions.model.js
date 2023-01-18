@@ -132,7 +132,7 @@ exports.createOrder = async (data, userId, callback) => {
     const seats = dataBody.seatNum.map((num) => `${num}`).join(", ");
     const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
 
-    const rsvQuery = await db.query(sqlReservedSeat, seats);
+    const rsvQuery = await db.query(sqlReservedSeat, [seats]);
 
     await db.query("COMMIT");
 
