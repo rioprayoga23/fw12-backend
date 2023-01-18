@@ -5,12 +5,12 @@ exports.readAllReservedSeat = (callback) => {
   return db.query(sql, callback);
 };
 
-exports.createReservedSeat = (data, callback) => {
+exports.createReservedSeat = async (data) => {
   const { seatNum, transactionId } = data;
-  const sql =
-    'INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,$2) RETURNING *';
-  const values = [seatNum, transactionId];
-  return db.query(sql, values, callback);
+  const seats = seatNum.map((num) => `(${num}, ${transactionId})`).join(", ");
+  const sql = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ${seats} RETURNING *`;
+  const results = await db.query(sql);
+  return results.rows[0];
 };
 
 exports.updateReservedSeat = (data, id, callback) => {

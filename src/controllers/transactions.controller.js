@@ -8,6 +8,7 @@ const {
   createOrder,
   historyOrder,
 } = require("../models/transactions.model");
+const { createReservedSeat } = require("../models/reservedSeat.model");
 
 const { errorHandler } = require("../helpers/errorHandler.helper");
 const filter = require("../helpers/filter.helper");
@@ -106,17 +107,41 @@ exports.deleteTransaction = (req, res) => {
   });
 };
 
-exports.createOrder = (req, res) => {
-  createOrder(req.body, req.userData.id, (error, results) => {
-    if (error) {
-      return errorHandler(error, res);
+// exports.createOrder = (req, res) => {
+//   createOrder(req.body, req.userData.id, (error, results) => {
+//     if (error) {
+//       return errorHandler(error, res);
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "Create order success",
+//       results: [results.trxQuery.rows[0], results.rsvQuery.rows],
+//     });
+//   });
+// };
+
+exports.createOrder = async (req, res) => {
+  try {
+    const { id: trxId } = await createOrder(req.body, req.userData.id);
+    let i = 0;
+    while (i < req.body.seatNum.length) {
+      const data = {
+        seatNum: req.body.seatNum[i],
+        transactionId: trxId,
+      };
+      await createReservedSeat(data);
+      i++;
     }
     return res.status(200).json({
       success: true,
-      message: "Create order success",
-      results: [results.trxQuery.rows[0], results.rsvQuery.rows],
+      message: "Transactions success",
     });
-  });
+  } catch (error) {
+    return res.status(500).json({
+      success: true,
+      message: error.message,
+    });
+  }
 };
 
 exports.historyOrder = (req, res) => {

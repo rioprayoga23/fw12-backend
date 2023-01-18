@@ -94,62 +94,93 @@ exports.deleteTransaction = (id, callback) => {
   db.query(sql, values, callback);
 };
 
-exports.createOrder = async (data, userId, callback) => {
-  const dataBody = {
-    userId: userId,
-    bookingDate: data.bookingDate,
-    movieId: data.movieId,
-    cinemaId: data.cinemaId,
-    movieScheduleId: data.movieScheduleId,
-    fullName: data.fullName,
-    email: data.email,
-    phoneNumber: data.phoneNumber,
-    paymentMethodId: data.paymentMethodId,
-    idStatus: data.idStatus,
-    seatNum: data.seatNum,
-    total: data.total,
-    bookingTime: data.bookingTime,
-  };
-  try {
-    await db.query("BEGIN");
+exports.createOrder = async (data, userId) => {
+  // const dataBody = {
+  //   userId: userId,
+  //   bookingDate: data.bookingDate,
+  //   movieId: data.movieId,
+  //   cinemaId: data.cinemaId,
+  //   movieScheduleId: data.movieScheduleId,
+  //   fullName: data.fullName,
+  //   email: data.email,
+  //   phoneNumber: data.phoneNumber,
+  //   paymentMethodId: data.paymentMethodId,
+  //   idStatus: data.idStatus,
+  //   seatNum: data.seatNum,
+  //   total: data.total,
+  //   bookingTime: data.bookingTime,
+  // };
 
-    const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus",total,"bookingTime") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`;
+  const sql = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus",total,"bookingTime") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`;
 
-    const trxQuery = await db.query(sqlTransaction, [
-      dataBody.userId,
-      dataBody.bookingDate,
-      dataBody.movieId,
-      dataBody.cinemaId,
-      dataBody.fullName,
-      dataBody.email,
-      dataBody.phoneNumber,
-      dataBody.paymentMethodId,
-      1,
-      dataBody.total,
-      dataBody.bookingTime,
-    ]);
-
-    const trxId = trxQuery.rows[0].id;
-    const seats = dataBody.seatNum
-      .map((num) => `(${num}, ${trxId})`)
-      .join(", ");
-    const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ${seats} RETURNING *`;
-
-    const rsvQuery = await db.query(sqlReservedSeat);
-
-    await db.query("COMMIT");
-
-    const results = {
-      trxQuery,
-      rsvQuery,
-    };
-
-    callback(null, results);
-  } catch (error) {
-    // db.query("ROLLBACK");
-    callback(error, null);
-  }
+  const results = await db.query(sql, [
+    userId,
+    data.bookingDate,
+    data.movieId,
+    data.cinemaId,
+    data.fullName,
+    data.email,
+    data.phoneNumber,
+    data.paymentMethodId,
+    1,
+    data.total,
+    data.bookingTime,
+  ]);
+  return results.rows[0];
 };
+
+// exports.createOrder = async (data, userId, callback) => {
+//   const dataBody = {
+//     userId: userId,
+//     bookingDate: data.bookingDate,
+//     movieId: data.movieId,
+//     cinemaId: data.cinemaId,
+//     movieScheduleId: data.movieScheduleId,
+//     fullName: data.fullName,
+//     email: data.email,
+//     phoneNumber: data.phoneNumber,
+//     paymentMethodId: data.paymentMethodId,
+//     idStatus: data.idStatus,
+//     seatNum: data.seatNum,
+//     total: data.total,
+//     bookingTime: data.bookingTime,
+//   };
+//   try {
+//     await db.query("BEGIN");
+
+//     const sqlTransaction = `INSERT INTO transactions ("userId","bookingDate","movieId","cinemaId","fullName",email,"phoneNumber","paymentMethodId","idStatus",total,"bookingTime") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`;
+
+//     const trxQuery = await db.query(sqlTransaction, [
+//       dataBody.userId,
+//       dataBody.bookingDate,
+//       dataBody.movieId,
+//       dataBody.cinemaId,
+//       dataBody.fullName,
+//       dataBody.email,
+//       dataBody.phoneNumber,
+//       dataBody.paymentMethodId,
+//       1,
+//       dataBody.total,
+//       dataBody.bookingTime,
+//     ]);
+
+//     const sqlReservedSeat = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ($1,currval(pg_get_serial_sequence('transactions','id'))) RETURNING *`;
+
+//     const rsvQuery = await db.query(sqlReservedSeat, [dataBody.seatNum]);
+
+//     await db.query("COMMIT");
+
+//     const results = {
+//       trxQuery,
+//       rsvQuery,
+//     };
+
+//     callback(null, results);
+//   } catch (error) {
+//     // db.query("ROLLBACK");
+//     callback(error, null);
+//   }
+// };
 
 exports.historyOrder = (id, callback) => {
   const sql = `SELECT t.id, t."bookingDate", t."bookingTime", m.title, c.picture from transactions t 
