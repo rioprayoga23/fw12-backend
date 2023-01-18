@@ -6,8 +6,9 @@ exports.readAllReservedSeat = (callback) => {
 };
 
 exports.createReservedSeat = async (data) => {
-  const { seatNum, transactionId } = data;
-  const seats = seatNum.map((num) => `(${num}, ${transactionId})`).join(", ");
+  const seats = data.seatNum
+    .map((num) => `(${num}, ${data.transactionId})`)
+    .join(", ");
   const sql = `INSERT INTO "reservedSeat" ("seatNum","transactionId") VALUES ${seats} RETURNING *`;
   const results = await db.query(sql);
   return results.rows[0];

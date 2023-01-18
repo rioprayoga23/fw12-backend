@@ -124,14 +124,13 @@ exports.createOrder = async (req, res) => {
   try {
     const { id: trxId } = await createOrder(req.body, req.userData.id);
     let i = 0;
-    while (i < req.body.seatNum.length) {
-      const data = {
-        seatNum: req.body.seatNum[i],
-        transactionId: trxId,
-      };
-      await createReservedSeat(data);
-      i++;
-    }
+
+    const data = {
+      seatNum: req.body.seatNum,
+      transactionId: trxId,
+    };
+    await createReservedSeat(data);
+
     return res.status(200).json({
       success: true,
       message: "Transactions success",
