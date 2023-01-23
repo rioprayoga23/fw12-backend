@@ -167,7 +167,7 @@ exports.createOrder = async (data, userId) => {
 // };
 
 exports.historyOrder = (id, callback) => {
-  const sql = `SELECT t.id, t."bookingDate", t."bookingTime", m.title, c.picture from transactions t 
+  const sql = `SELECT t.id, to_char(t."bookingDate",  'Day, DD FMMonth YYYY') AS "bookingDate", to_char(t."bookingTime",'hh12:mi AM') AS "bookingTime", m.title, c.picture from transactions t 
   JOIN movies m ON m.id = t."movieId"
   JOIN cinemas c ON c.id = t."cinemaId" 
   WHERE t."userId" = $1`;
